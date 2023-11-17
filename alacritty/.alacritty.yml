@@ -35,10 +35,8 @@ shell:
   program: /opt/homebrew/bin/tmux # <- set this to the path of your tmux installation
   args:
     - new-session
-  #- -A
     - -D
-  #- -s
-  #- main
+    - -f "$HOME/.tmux.conf"
 
 # Font config:
 font:

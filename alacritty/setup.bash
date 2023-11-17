@@ -1,7 +1,5 @@
 #!/bin/bash
 
-global_ignore_path="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )/.gitignore_global"
+alacritty_path="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )/.alacritty.yml"
 
-ln -s "$global_ignore_path" "$HOME/.gitignore_global"
-
-git config --global core.excludesfile ~/.gitignore_global
+ln -s "$alacritty_path" "$HOME/.alacritty.yml"
