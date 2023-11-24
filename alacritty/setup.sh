@@ -3,8 +3,9 @@
 setup_name="Alacritty"
 
 alacritty_path="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )/.alacritty.yml"
+dest_path="$HOME/.alacritty.yml"
 
-if [ -f "$alacritty_path" ]; then
+if [ -f "$dest_path" ]; then
 	read -p "There's an existing [$setup_name] config file in your environment, do you want to replace it? (y/n)" yn
 	
 	case $yn in
@@ -14,6 +15,6 @@ if [ -f "$alacritty_path" ]; then
 
 fi
 
-ln -s "$alacritty_path" "$HOME/.alacritty.yml"
+ln -s "$alacritty_path" "$dest_path"
 
 echo "[$setup_name] installed"

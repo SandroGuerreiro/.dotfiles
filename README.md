@@ -1,4 +1,4 @@
-# .dotfiles config
+ .dotfiles config
 
 This repository is used to setup my entire dotfiles config.
 
@@ -23,3 +23,7 @@ You will probably need to give permissions on the main setup.sh file. You can do
 ```bash
 chmod +x ./setup.sh
 ```
+
+### zsh vars
+
+Zsh vars will not contain any secrets, these secrets will be contained in a separate file that is not included in this project. After you run the setup, you will find in your home path, the file .zshrc_secrets where you can insert all vars you desire

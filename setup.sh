@@ -10,6 +10,10 @@ git_setup="${base_path}./git/setup.sh"
 chmod +x "$git_setup"
 $git_setup
 
+ohmyzsh_setup="${base_path}ohmyzsh/setup.sh"
+chmod +x "$ohmyzsh_setup"
+$ohmyzsh_setup
+
 nvim_setup="${base_path}./nvim/setup.sh"
 chmod +x "$nvim_setup"
 $nvim_setup
