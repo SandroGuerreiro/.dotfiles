@@ -1,4 +1,4 @@
- .dotfiles config
+# .dotfiles config
 
 This repository is used to setup my entire dotfiles config.
 
