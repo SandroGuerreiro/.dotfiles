@@ -1,7 +1,7 @@
 require('settings')
-require('keymaps')
 require('autocmds')
 require('plugin_list')
+require('keymaps')
 
 
 vim.cmd[[colorscheme nord]] -- Theme

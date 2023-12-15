@@ -37,3 +37,10 @@ keymap('n', '<M-|>', '<cmd>vsplit<cr>')
 keymap('n', '<M-->', '<cmd>split<cr>')
 
 keymap('n', '<M-q>', '<cmd>q<cr>')
+
+-- Telescope keybinds
+local builtin = require('telescope.builtin')
+keymap('n', '<leader>ff', builtin.find_files, {})
+keymap('n', '<leader>fg', builtin.live_grep, {})
+keymap('n', '<leader>fb', builtin.buffers, {})
+keymap('n', '<leader>fh', builtin.help_tags, {})

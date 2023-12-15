@@ -2,6 +2,7 @@
 --			SETTINGS 
 -- ------------------------------------------------------------
 local opt = vim.opt
+vim.g.mapleader = " "
 
 opt.termguicolors = true 	-- Enable terminal colors
 opt.number = true 		-- Enables lines numbers
