@@ -10,22 +10,13 @@ export PATH="$HOME/.local/bin":$PATH
 export NVM_DIR=~/.nvm
 source $(brew --prefix nvm)/nvm.sh
 
+# Git aliases
+alias gs="git status"
+alias gco="git checkout --track -b origin/"
+
 # Oh My ZSH configuration
 export ZSH="$HOME/.oh-my-zsh" # Path to the file
 ZSH_THEME="robbyrussell" # OhMyZshTheme
-# CASE_SENSITIVE="true" # Use case-sensitive completion
-# HYPHEN_INSENSITIVE="true" # Hyphen-insensitive completion (CASE_SENSITIVE must off for this)
-# zstyle ':omz:update' mode disabled  # Update rules: disabled | auto | reminder
-# zstyle ':omz:update' frequency 13 # Frequency of updates in days
-# DISABLE_MAGIC_FUNCTIONS="true" # If the links and text pasting is behaving weird
-# DISABLE_LS_COLORS="true" # Uncomment the following line to disable colors in ls.
-# DISABLE_AUTO_TITLE="true" # Disable auto-setting terminal title.
-# ENABLE_CORRECTION="true" # Enable command auto-correction.
-# COMPLETION_WAITING_DOTS="true" # Display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f" # Change displayed waiting message
-# DISABLE_UNTRACKED_FILES_DIRTY="true" # Disable marking untracked files
-# HIST_STAMPS="mm/dd/yyyy" # Change the command execution time: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# ZSH_CUSTOM=/path/to/new-custom-folder # Use another custom folder than $ZSH/custom
 
 # Load secrets from secrets file
 if [ -f ~/.zshrc_secrets ]; then
@@ -33,11 +24,6 @@ if [ -f ~/.zshrc_secrets ]; then
 fi
 
 # ====================== PLUGINS =========================
-# Which plugins would you like to load?
-# Standard plugins can be found in $ZSH/plugins/
-# Custom plugins may be added to $ZSH_CUSTOM/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
 plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
