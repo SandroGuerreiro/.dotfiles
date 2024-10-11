@@ -21,6 +21,10 @@ alias gs="git status"
 alias gco="git checkout --track -b origin/"
 alias gcm="git commit -m "
 
+# PNPM aliases
+alias pnpmV2="corepack prepare pnpm@latest-8 --activate"
+alias pnpmLat="corepack prepare pnpm@latest --activate"
+
 # AWS aliases
 alias aws-prd='aws-vault exec recharge-production -- aws'
 alias aws-acc='aws-vault exec recharge-acceptance -- aws'
