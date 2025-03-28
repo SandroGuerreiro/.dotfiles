@@ -13,13 +13,15 @@ DISABLE_MAGIC_FUNCTIONS=true
 export PATH="$HOME/.local/bin":$PATH
 
 # Nvim configuration
-export NVM_DIR=~/.nvm
-source $(brew --prefix nvm)/nvm.sh
+#export NVM_DIR=~/.nvm
+#source $(brew --prefix nvm)/nvm.sh
 
 # Git aliases
 alias gs="git status"
 alias gco="git checkout --track -b origin/"
 alias gcm="git commit -m "
+
+alias coding="cd ~/Code"
 
 # PNPM aliases
 alias pnpmV2="corepack prepare pnpm@latest-8 --activate"
