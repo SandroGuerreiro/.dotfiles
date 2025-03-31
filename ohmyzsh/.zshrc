@@ -13,22 +13,25 @@ export VAULT_AUTH_TOKEN=""
 DISABLE_MAGIC_FUNCTIONS=true
 
 # Mysql
-  export LDFLAGS="-L/opt/homebrew/opt/mysql-client/lib"
-  export CPPFLAGS="-I/opt/homebrew/opt/mysql-client/include"
+export LDFLAGS="-L/opt/homebrew/opt/mysql-client/lib"
+export CPPFLAGS="-I/opt/homebrew/opt/mysql-client/include"
 
 # Path configuration
 export PATH="$HOME/.local/bin":$PATH
 
-# Nvim configuration
-#export NVM_DIR=~/.nvm
-#source $(brew --prefix nvm)/nvm.sh
+# Nvm configuration
+export NVM_DIR=~/.nvm
+source $(brew --prefix nvm)/nvm.sh
 
 # Git aliases
 alias gs="git status"
 alias gco="git checkout --track -b origin/"
 alias gcm="git commit -m "
 
+# Add 'code' alias for navigating to ~/Code with autocompletion
 alias coding="cd ~/Code"
+
+alias v2="cd ~/Code/recharge-v2"
 
 # PNPM aliases
 alias pnpmV2="corepack prepare pnpm@latest-8 --activate"
@@ -82,7 +85,13 @@ if [ -f ~/.zshrc_secrets ]; then
 fi
 
 # ====================== PLUGINS =========================
-plugins=(git)
+plugins=(
+  git
+  zsh-history-substring-search
+  zsh-autosuggestions
+  F-Sy-H
+)
+fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
 
 source $ZSH/oh-my-zsh.sh
 
@@ -120,3 +129,10 @@ esac
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# Enable path autocompletion for 'code' alias
+_code_autocomplete() {
+  local cur=${COMP_WORDS[COMP_CWORD]}
+  COMPREPLY=( $(compgen -d ~/Code/$cur) )
+}
+complete -o nospace -F _code_autocomplete code
