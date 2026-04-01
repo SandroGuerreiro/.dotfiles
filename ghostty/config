@@ -1,0 +1,40 @@
+# Font
+font-family = FiraCode Nerd Font Mono
+font-size = 14
+font-thicken = true
+
+# Nord theme
+background = 2E3440
+foreground = D8DEE9
+
+# Nord palette (black, red, green, yellow, blue, magenta, cyan, white)
+palette = 0=#3B4252
+palette = 1=#BF616A
+palette = 2=#A3BE8C
+palette = 3=#EBCB8B
+palette = 4=#81A1C1
+palette = 5=#B48EAD
+palette = 6=#88C0D0
+palette = 7=#E5E9F0
+
+# Nord bright palette
+palette = 8=#4C566A
+palette = 9=#BF616A
+palette = 10=#A3BE8C
+palette = 11=#EBCB8B
+palette = 12=#81A1C1
+palette = 13=#B48EAD
+palette = 14=#8FBCBB
+palette = 15=#ECEFF4
+
+# Window
+background-opacity = 0.9
+window-padding-x = 4
+window-padding-y = 4
+macos-option-as-alt = left
+
+# Shell — launch tmux automatically
+command = /opt/homebrew/bin/tmux new-session -D -f "$HOME/.tmux.conf"
+
+# Working directory
+working-directory = ~/Code
