@@ -11,7 +11,7 @@ return {
   },
   config = function()
     require("nvim-tree").setup{
-      update_cwd = true,
+      sync_root_with_cwd = true,
       actions = {
         open_file = {
           resize_window = true,
@@ -22,9 +22,10 @@ return {
       },
       update_focused_file = {
         enable = true,
-        update_cwd = true,
+        update_root = true,
       },
       filters = {
+        git_ignored = false,
         custom = { "^\\.git" }
       },      
       diagnostics = {

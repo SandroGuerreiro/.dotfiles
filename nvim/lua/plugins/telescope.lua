@@ -1,10 +1,28 @@
 return {
 	'nvim-telescope/telescope.nvim',
-	tag = '0.1.5',
-	dependencies = { 
+	branch = '0.1.x',
+	dependencies = {
 		'nvim-lua/plenary.nvim',
 		'nvim-treesitter/nvim-treesitter',
 		'nvim-telescope/telescope-fzy-native.nvim',
+		'nvim-telescope/telescope-live-grep-args.nvim',
 		'BurntSushi/ripgrep',
-	}
+	},
+	config = function()
+		local telescope = require('telescope')
+		local lga_actions = require('telescope-live-grep-args.actions')
+		telescope.setup({
+			extensions = {
+				live_grep_args = {
+					auto_quoting = false,
+					mappings = {
+						i = {
+							['<C-q>'] = lga_actions.quote_prompt(),
+						},
+					},
+				},
+			},
+		})
+		telescope.load_extension('live_grep_args')
+	end,
 }

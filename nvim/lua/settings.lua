@@ -12,10 +12,12 @@ opt.ignorecase = true 		-- Ignore case when searching
 opt.splitright = true 		-- Split to the right on vertical
 opt.splitbelow = true 		-- Split below when horizontal
 opt.wrap = true 		-- Wrap lines
+opt.linebreak = true		-- Wrap at word boundaries, not mid-word
 opt.updatetime=100 		-- Time to wait without action before writting to disk
 opt.formatoptions:append('cro') -- continue comments when going down a line, hit C-u to remove the added comment prefix
 opt.sessionoptions:remove('options') -- don't save keymaps and local options
 opt.foldlevelstart = 99 	-- no auto folding
+opt.clipboard = 'unnamedplus'	-- Yank goes to system clipboard
 
 -- Indentation
 local tabs = 2

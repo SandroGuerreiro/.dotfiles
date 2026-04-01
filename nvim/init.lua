@@ -6,7 +6,7 @@ require('lsp')
 
 
 
-vim.cmd[[colorscheme darkplus]] -- Theme
+vim.cmd[[colorscheme vscode]] -- Theme
 
 -- vim.cmd[[colorscheme nord]] -- Theme
 -- vim.cmd[[colorscheme nord]] -- Theme

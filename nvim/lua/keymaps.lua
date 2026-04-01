@@ -21,11 +21,6 @@ keymap('n', '<leader>D', '--_D', {}) -- Delete until EOL without yanking
 keymap('n', '<leader>c', '--_c', {}) -- Ckange without yanking
 keymap('n', '<leader>C', '--_C', {}) -- Change until EOL without yanking
 
--- Yank to clipboard
-keymap('', '<leader>y', '--+y', {}) -- Yank to os clipboard
-keymap('', '<leader>Y', '--+y$', {}) -- Yank until EOL to clipboard
-keymap('n', '<leader>p', '--+p', {}) -- Paste after cursor from clipboard
-keymap('n', '<leader>P', '--+P', {}) -- Paste before cursor from clipboard
 
 -- Split keybinds
 keymap({'n', 't'}, '<C-h>', '<C-w>h')
@@ -41,8 +36,11 @@ keymap('n', '<M-q>', '<cmd>q<cr>')
 -- Telescope keybinds
 local builtin = require('telescope.builtin')
 keymap('n', '<leader>ff', builtin.find_files, {})
-keymap('n', '<leader>fg', builtin.live_grep, {})
+keymap('n', '<leader>fg', function()
+	require('telescope').extensions.live_grep_args.live_grep_args()
+end, {})
 keymap('n', '<leader>fb', builtin.buffers, {})
+keymap('n', '<leader>fs', builtin.current_buffer_fuzzy_find, {})
 keymap('n', '<leader>fh', builtin.help_tags, {})
 
 -- Barbar keybinds
@@ -90,3 +88,56 @@ keymap('n', '<Space>bb', '<Cmd>BufferOrderByBufferNumber<CR>', opts)
 keymap('n', '<Space>bd', '<Cmd>BufferOrderByDirectory<CR>', opts)
 keymap('n', '<Space>bl', '<Cmd>BufferOrderByLanguage<CR>', opts)
 keymap('n', '<Space>bw', '<Cmd>BufferOrderByWindowNumber<CR>', opts)
+
+-- Terminal keybinds
+keymap('t', '<C-n>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+keymap('t', '<C-h>', '<C-\\><C-n><C-w>h', { desc = 'Terminal: move to left split' })
+keymap('t', '<C-j>', '<C-\\><C-n><C-w>j', { desc = 'Terminal: move to below split' })
+keymap('t', '<C-k>', '<C-\\><C-n><C-w>k', { desc = 'Terminal: move to above split' })
+keymap('t', '<C-l>', '<C-\\><C-n><C-w>l', { desc = 'Terminal: move to right split' })
+
+-- Claude Code: open in horizontal split terminal (below)
+keymap('n', '<leader>cc', function()
+  vim.cmd('wincmd l')           -- move to the rightmost code buffer
+  vim.cmd('split | terminal claude')
+end, { desc = 'Open Claude Code in horizontal split' })
+
+-- Open file under cursor in the buffer above (not in the terminal split)
+keymap('n', 'gf', function()
+  local file = vim.fn.expand('<cfile>')
+  local target = nil
+  if vim.fn.filereadable(file) == 1 then
+    target = file
+  else
+    local cwd_file = vim.fn.getcwd() .. '/' .. file
+    if vim.fn.filereadable(cwd_file) == 1 then
+      target = cwd_file
+    end
+  end
+  if target then
+    vim.cmd('wincmd k')
+    vim.cmd('edit ' .. target)
+  else
+    vim.notify('File not found: ' .. file, vim.log.levels.WARN)
+  end
+end, { desc = 'Go to file (opens in buffer above)' })
+
+-- Pick from files Claude has touched (fzf picker)
+keymap('n', '<leader>cf', function()
+  -- Scope log per tmux window so each session is isolated
+  local session_id = vim.fn.system("tmux display-message -p '#{session_name}:#{window_index}' 2>/dev/null"):gsub('%s+$', '')
+  if session_id == '' then
+    session_id = 'default'
+  end
+  local log = '/tmp/claude-files-' .. session_id .. '.log'
+  if vim.fn.filereadable(log) == 0 then
+    vim.notify('No files logged yet — start a Claude session first', vim.log.levels.WARN)
+    return
+  end
+  vim.cmd('wincmd k')
+  require('telescope.pickers').new({}, {
+    prompt_title = 'Claude Touched Files',
+    finder = require('telescope.finders').new_oneshot_job({ 'cat', log }),
+    sorter = require('telescope.config').values.generic_sorter({}),
+  }):find()
+end, { desc = 'Pick from files Claude touched' })
