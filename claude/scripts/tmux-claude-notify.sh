@@ -8,6 +8,8 @@ case "$MODE" in
     [ -z "$TMUX_PANE" ] && exit 0
     WINDOW_ID=$(tmux display-message -t "$TMUX_PANE" -p '#{window_id}' 2>/dev/null)
     [ -z "$WINDOW_ID" ] && exit 0
+    ACTIVE_WINDOW_ID=$(tmux display-message -p '#{window_id}' 2>/dev/null)
+    [ "$WINDOW_ID" = "$ACTIVE_WINDOW_ID" ] && exit 0
     tmux set-window-option -t "$WINDOW_ID" @claude_notify 1
     ;;
 
