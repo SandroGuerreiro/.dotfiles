@@ -22,11 +22,7 @@ keymap('n', '<leader>c', '--_c', {}) -- Ckange without yanking
 keymap('n', '<leader>C', '--_C', {}) -- Change until EOL without yanking
 
 
--- Split keybinds
-keymap({'n', 't'}, '<C-h>', '<C-w>h')
-keymap({'n', 't'}, '<C-j>', '<C-w>j')
-keymap({'n', 't'}, '<C-k>', '<C-w>k')
-keymap({'n', 't'}, '<C-l>', '<C-w>l')
+-- Split keybinds (C-h/j/k/l handled by vim-tmux-navigator plugin)
 
 keymap('n', '<M-|>', '<cmd>vsplit<cr>')
 keymap('n', '<M-->', '<cmd>split<cr>')
@@ -91,10 +87,6 @@ keymap('n', '<Space>bw', '<Cmd>BufferOrderByWindowNumber<CR>', opts)
 
 -- Terminal keybinds
 keymap('t', '<C-n>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
-keymap('t', '<C-h>', '<C-\\><C-n><C-w>h', { desc = 'Terminal: move to left split' })
-keymap('t', '<C-j>', '<C-\\><C-n><C-w>j', { desc = 'Terminal: move to below split' })
-keymap('t', '<C-k>', '<C-\\><C-n><C-w>k', { desc = 'Terminal: move to above split' })
-keymap('t', '<C-l>', '<C-\\><C-n><C-w>l', { desc = 'Terminal: move to right split' })
 
 -- Claude Code: open in horizontal split terminal (below)
 keymap('n', '<leader>cc', function()
