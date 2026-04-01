@@ -13,6 +13,7 @@ if [ -f "$dest_path" ]; then
 			exit;;
 	esac
 
+	rm "$dest_path"
 fi
 
 ln -s "$alacritty_path" "$dest_path"

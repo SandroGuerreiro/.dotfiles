@@ -78,7 +78,6 @@ alias dev-super='aws-vault exec recharge-development-super --'
 
 # Oh My ZSH configuration
 export ZSH="$HOME/.oh-my-zsh" # Path to the file
-# ZSH_THEME="robbyrussell" # OhMyZshTheme
 ZSH_THEME="powerlevel10k/powerlevel10k" # OhMyZshTheme
 
 # Load secrets from secrets file
@@ -97,30 +96,6 @@ fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
 
 source $ZSH/oh-my-zsh.sh
 
-# User configuration
-# export MANPATH="/usr/local/man:$MANPATH"
-# export LANG=en_US.UTF-8 # You may need to manually set your language environment
-
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-
-
 # pnpm
 export PNPM_HOME="/Users/sandroguerreiro/Library/pnpm"
 case ":$PATH:" in
@@ -132,9 +107,8 @@ esac
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-# Enable path autocompletion for 'code' alias
+# Enable path autocompletion for 'code' command
 _code_autocomplete() {
-  local cur=${COMP_WORDS[COMP_CWORD]}
-  COMPREPLY=( $(compgen -d ~/Code/$cur) )
+  _directories -W ~/Code
 }
-complete -o nospace -F _code_autocomplete code
+compdef _code_autocomplete code

@@ -23,6 +23,5 @@ vim.api.nvim_create_autocmd('LspAttach', {
 vim.lsp.config('lua_ls', { capabilities = capabilities })
 vim.lsp.config('gopls', { capabilities = capabilities })
 vim.lsp.config('rust_analyzer', { capabilities = capabilities })
-vim.lsp.config('ts_ls', { capabilities = capabilities })
 
-vim.lsp.enable({ 'lua_ls', 'gopls', 'rust_analyzer', 'ts_ls' })
+vim.lsp.enable({ 'lua_ls', 'gopls', 'rust_analyzer' })

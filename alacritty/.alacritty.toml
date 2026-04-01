@@ -23,9 +23,10 @@ yellow = "#EBCB8B"
 background = "#2E3440"
 foreground = "#D8DEE9"
 
+working_directory = "~/Code"
+
 [env]
 TERM = "xterm-256color"
-working_directory = "~/Code"
 
 [font]
 size = 14
@@ -43,4 +44,3 @@ opacity = 0.9
 option_as_alt = "OnlyLeft"
 startup_mode = "Maximized"
 
-[terminal]

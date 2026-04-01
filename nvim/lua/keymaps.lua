@@ -8,18 +8,17 @@ keymap('', '<Up>', '<Nop>', {})
 keymap('', '<Down>', '<Nop>', {})
 keymap('', '<Left>', '<Nop>', {})
 keymap('', '<Right>', '<Nop>', {})
-keymap('', '<Down>', '<Nop>', {})
 
 -- Center screen after search occurrence
 keymap('', 'n', 'nzz', {})
 keymap('', 'N', 'Nzz', {})
 
 -- Options to not yank
-keymap('x', '<leader>p', '--_dP', {}) -- Replace without yanking
-keymap('n', '<leader>d', '--_d', {}) -- Delete without yanking'
-keymap('n', '<leader>D', '--_D', {}) -- Delete until EOL without yanking
-keymap('n', '<leader>c', '--_c', {}) -- Ckange without yanking
-keymap('n', '<leader>C', '--_C', {}) -- Change until EOL without yanking
+keymap('x', '<leader>p', '"_dP', {}) -- Replace without yanking
+keymap('n', '<leader>d', '"_d', {}) -- Delete without yanking
+keymap('n', '<leader>D', '"_D', {}) -- Delete until EOL without yanking
+keymap('n', '<leader>c', '"_c', {}) -- Change without yanking
+keymap('n', '<leader>C', '"_C', {}) -- Change until EOL without yanking
 
 
 -- Split keybinds (C-h/j/k/l handled by vim-tmux-navigator plugin)

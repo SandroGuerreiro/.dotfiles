@@ -21,3 +21,7 @@ $nvim_setup
 tmux_setup="${base_path}./tmux/setup.sh"
 chmod +x "$tmux_setup"
 $tmux_setup
+
+ghostty_setup="${base_path}ghostty/setup.sh"
+chmod +x "$ghostty_setup"
+$ghostty_setup
