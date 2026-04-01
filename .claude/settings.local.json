@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(tmux show-hooks:*)",
+      "Bash(tmux show-options:*)",
+      "Bash(tmux list-windows:*)",
+      "Bash(chmod +x /Users/sandroguerreiro/Code/.dotfiles/claude/setup.sh)",
+      "Bash(bash /Users/sandroguerreiro/Code/.dotfiles/claude/setup.sh)"
+    ]
+  }
+}

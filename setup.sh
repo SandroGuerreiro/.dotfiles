@@ -25,3 +25,7 @@ $tmux_setup
 ghostty_setup="${base_path}ghostty/setup.sh"
 chmod +x "$ghostty_setup"
 $ghostty_setup
+
+claude_setup="${base_path}claude/setup.sh"
+chmod +x "$claude_setup"
+$claude_setup

@@ -1,0 +1,151 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm tauri build)",
+      "Bash(bash scripts/release.sh 0.5.0 \"Test release\")",
+      "Bash(git add -A)",
+      "Bash(git commit -m \"Add release automation script with hdiutil DMG creation\")",
+      "Bash(git commit -m \"Reset versions to 0.4.2 for testing release script\")",
+      "Bash(timeout 5 bash scripts/release.sh 0.4.3 \"Fix: improved PR detection\")",
+      "Bash(pnpm tauri build --help)",
+      "Bash(pnpm tauri build --bundles app)",
+      "Bash(git add scripts/release.sh)",
+      "Bash(git commit -m \"Fix: use --bundles app flag to skip problematic DMG bundler\")",
+      "Bash(git add -f scripts/release.sh scripts/RELEASE.md)",
+      "Bash(git add -f scripts/RELEASE.md)",
+      "Bash(git commit -m \"Update RELEASE.md to document DMG creation fix\")",
+      "Bash(npx eslint --fix apps/recharge-fe/src/product/product-page/gtm-view-item-list-event/gtm-view-item-list-event.tsx)",
+      "Bash(grep -l \"import.*from ''react''\" apps/recharge-fe/src/product/product-page/*.tsx)",
+      "Bash(npm test -- apps/recharge-fe/src/product/trigger-gtm-view-item-list-event.spec.ts --testPathPattern=\"trigger-gtm-view-item-list-event\")",
+      "Bash(npm test -- libs/fe-checkout-flow/src/lib/gtm-begin-checkout-route-event.spec.tsx --testNamePattern=\"should fire the event with product category when categoryIds match the label\")",
+      "Bash(npm ls @storybook/preview-api)",
+      "Bash(pnpm ls @storybook/preview-api)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"/Users/sandroguerreiro/Code/everything-claude-code/scripts/hooks/run-with-flags.js\" \"pre:write:doc-file-warning\" \"scripts/hooks/doc-file-warning.js\" \"standard,strict\""
+          }
+        ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash /Users/sandroguerreiro/.claude/scripts/tmux-claude-notify.sh clear"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Read|Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash /Users/sandroguerreiro/.claude/scripts/log-touched-files.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"/Users/sandroguerreiro/Code/everything-claude-code/scripts/hooks/run-with-flags.js\" \"post:edit:format\" \"scripts/hooks/post-edit-format.js\" \"standard,strict\""
+          }
+        ]
+      },
+      {
+        "matcher": "Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"/Users/sandroguerreiro/Code/everything-claude-code/scripts/hooks/run-with-flags.js\" \"post:edit:typecheck\" \"scripts/hooks/post-edit-typecheck.js\" \"standard,strict\""
+          }
+        ]
+      },
+      {
+        "matcher": "Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"/Users/sandroguerreiro/Code/everything-claude-code/scripts/hooks/run-with-flags.js\" \"post:edit:console-warn\" \"scripts/hooks/post-edit-console-warn.js\" \"standard,strict\""
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"/Users/sandroguerreiro/Code/everything-claude-code/scripts/hooks/run-with-flags.js\" \"pre:compact\" \"scripts/hooks/pre-compact.js\" \"standard,strict\""
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash /Users/sandroguerreiro/.claude/scripts/tmux-claude-notify.sh stop"
+          }
+        ]
+      }
+    ],
+    "PermissionRequest": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash /Users/sandroguerreiro/.claude/scripts/tmux-claude-notify.sh stop"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"/Users/sandroguerreiro/Code/everything-claude-code/scripts/hooks/run-with-flags.js\" \"stop:check-console-log\" \"scripts/hooks/check-console-log.js\" \"standard,strict\""
+          },
+          {
+            "type": "command",
+            "command": "bash /Users/sandroguerreiro/.claude/scripts/tmux-claude-notify.sh stop"
+          }
+        ]
+      }
+    ]
+  },
+  "enabledPlugins": {
+    "frontend-design@claude-plugins-official": true,
+    "code-simplifier@claude-plugins-official": true,
+    "code-review@claude-plugins-official": false,
+    "pr-review-toolkit@claude-plugins-official": true,
+    "rust-analyzer-lsp@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": true,
+    "everything-claude-code@everything-claude-code": false,
+    "superpowers@claude-plugins-official": true
+  },
+  "extraKnownMarketplaces": {
+    "everything-claude-code": {
+      "source": {
+        "source": "github",
+        "repo": "affaan-m/everything-claude-code"
+      }
+    }
+  }
+}
