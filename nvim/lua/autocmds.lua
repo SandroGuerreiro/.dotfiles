@@ -1,8 +1,15 @@
 vim.api.nvim_create_autocmd("BufWritePre", {
 	pattern = { "*.ts", "*.tsx", "*.js", "*.jsx" },
 	callback = function()
-		vim.cmd("TSToolsOrganizeImports sync")
-		vim.cmd("EslintFixAll")
+		local eslint_attached = #vim.lsp.get_clients({ bufnr = 0, name = "eslint" }) > 0
+		if eslint_attached then
+			vim.lsp.buf.code_action({
+				context = { only = { "source.fixAll.eslint" } },
+				apply = true,
+			})
+		else
+			vim.cmd("TSToolsOrganizeImports sync")
+		end
 	end,
 })
 
