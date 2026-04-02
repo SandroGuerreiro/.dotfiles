@@ -108,6 +108,10 @@ Use these agents for code review:
 - Unbounded queries - add constraints
 - Missing caching - cache expensive operations
 
+## PR Description Acknowledgements
+
+When reviewing a PR, always cross-reference findings against the PR description. If an issue is already acknowledged in the PR body, **do not drop it** — instead include it in the report with a note: _"PR description acknowledges this: \<quote or summary\>"_. This keeps the review complete while avoiding false positives.
+
 ## Approval Criteria
 
 - **Approve**: No CRITICAL or HIGH issues

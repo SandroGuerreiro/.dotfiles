@@ -5,6 +5,18 @@ return {
 		'nvim-tree/nvim-web-devicons', -- OPTIONAL: for file icons
 	},
 	init = function() vim.g.barbar_auto_setup = false end,
+	config = function(_, opts)
+		-- Upstream bug: win_get_position is called with -1 when a sidebar buffer
+		-- is no longer visible in any window. Guard until fixed upstream.
+		local orig = vim.api.nvim_win_get_position
+		vim.api.nvim_win_get_position = function(win)
+			if not vim.api.nvim_win_is_valid(win) then
+				return { 0, 0 }
+			end
+			return orig(win)
+		end
+		require("barbar").setup(opts)
+	end,
 	opts = {
 		-- Excludes buffers from the tabline
 		exclude_ft = {'javascript'},
