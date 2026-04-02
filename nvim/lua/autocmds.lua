@@ -1,3 +1,11 @@
+vim.api.nvim_create_autocmd("BufWritePre", {
+	pattern = { "*.ts", "*.tsx", "*.js", "*.jsx" },
+	callback = function()
+		vim.cmd("TSToolsOrganizeImports sync")
+		vim.cmd("EslintFixAll")
+	end,
+})
+
 vim.api.nvim_create_autocmd("VimEnter", {
 	callback = function()
 		vim.cmd("NvimTreeOpen")
