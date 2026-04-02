@@ -113,22 +113,43 @@ keymap('n', 'gf', function()
   end
 end, { desc = 'Go to file (opens in buffer above)' })
 
--- Pick from files Claude has touched (fzf picker)
+-- Pick from files Claude has touched or that need review attention
 keymap('n', '<leader>cf', function()
-  -- Scope log per tmux window so each session is isolated
   local session_id = vim.fn.system("tmux display-message -p '#{session_name}:#{window_index}' 2>/dev/null"):gsub('%s+$', '')
   if session_id == '' then
     session_id = 'default'
   end
-  local log = '/tmp/claude-files-' .. session_id .. '.log'
-  if vim.fn.filereadable(log) == 0 then
+
+  local touched_log = '/tmp/claude-files-' .. session_id .. '.log'
+  local review_log  = '/tmp/claude-review-files-' .. session_id .. '.log'
+
+  local seen = {}
+  local files = {}
+
+  local function add(path)
+    path = path:gsub('%s+$', '')
+    if path ~= '' and not seen[path] then
+      seen[path] = true
+      table.insert(files, path)
+    end
+  end
+
+  for _, log in ipairs({ touched_log, review_log }) do
+    if vim.fn.filereadable(log) == 1 then
+      for line in io.lines(log) do add(line) end
+    end
+  end
+
+  if #files == 0 then
     vim.notify('No files logged yet — start a Claude session first', vim.log.levels.WARN)
     return
   end
+
   vim.cmd('wincmd k')
   require('telescope.pickers').new({}, {
-    prompt_title = 'Claude Touched Files',
-    finder = require('telescope.finders').new_oneshot_job({ 'cat', log }),
+    prompt_title = 'Claude Files',
+    finder = require('telescope.finders').new_table({ results = files }),
     sorter = require('telescope.config').values.generic_sorter({}),
+    previewer = require('telescope.config').values.file_previewer({}),
   }):find()
-end, { desc = 'Pick from files Claude touched' })
+end, { desc = 'Pick from files Claude touched or flagged in review' })

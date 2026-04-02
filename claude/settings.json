@@ -54,6 +54,15 @@
         ]
       },
       {
+        "matcher": "Agent",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash /Users/sandroguerreiro/.claude/scripts/log-review-files.sh"
+          }
+        ]
+      },
+      {
         "matcher": "Edit",
         "hooks": [
           {
@@ -92,28 +101,6 @@
         ]
       }
     ],
-    "Notification": [
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash /Users/sandroguerreiro/.claude/scripts/tmux-claude-notify.sh stop"
-          }
-        ]
-      }
-    ],
-    "PermissionRequest": [
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash /Users/sandroguerreiro/.claude/scripts/tmux-claude-notify.sh stop"
-          }
-        ]
-      }
-    ],
     "Stop": [
       {
         "matcher": "*",
@@ -147,5 +134,6 @@
         "repo": "affaan-m/everything-claude-code"
       }
     }
-  }
+  },
+  "model": "sonnet"
 }
