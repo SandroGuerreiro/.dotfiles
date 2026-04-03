@@ -30,3 +30,13 @@ Use the templates in `~/Code/Astrolabe/templates/` — every entry must have:
 - Index summaries must be under 150 characters
 - Update the `updated` date when modifying existing entries
 - Use `[[wikilinks]]` to connect related entries
+
+## Security — NEVER write secrets to this vault
+
+Astrolabe is a knowledge base, not a secrets store. **Never write real values** for:
+- API keys, tokens, passwords, credentials
+- Database connection strings or hostnames
+- Real user IDs, order IDs, customer data, PII
+- Internal URLs, IP addresses, or account identifiers
+
+Use placeholders or describe the *location* of the value instead (e.g. "stored in AWS SSM at `/prod/service/KEY`").

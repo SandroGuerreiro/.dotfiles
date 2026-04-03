@@ -1,5 +1,8 @@
 {
   "permissions": {
+    "additionalDirectories": [
+      "/Users/sandroguerreiro/Code/Astrolabe"
+    ],
     "allow": [
       "Bash(pnpm tauri build)",
       "Bash(bash scripts/release.sh 0.5.0 \"Test release\")",

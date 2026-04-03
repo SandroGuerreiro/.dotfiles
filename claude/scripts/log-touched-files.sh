@@ -12,6 +12,6 @@ if [ -n "$FILE" ] && [ -f "$FILE" ]; then
   SESSION_ID="${SESSION_ID:-$$}"
   LOGFILE="/tmp/claude-files-${SESSION_ID}.log"
   echo "$FILE" >> "$LOGFILE"
-  # Deduplicate in place
-  sort -u -o "$LOGFILE" "$LOGFILE"
+  # Deduplicate via temp file (in-place sort fails on paths with ':')
+  sort -u "$LOGFILE" > "${LOGFILE}.tmp" 2>/dev/null && mv "${LOGFILE}.tmp" "$LOGFILE" || true
 fi
