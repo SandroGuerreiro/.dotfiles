@@ -22,6 +22,7 @@
       "Bash(pnpm ls @storybook/preview-api)"
     ]
   },
+  "model": "opusplan",
   "hooks": {
     "PreToolUse": [
       {
