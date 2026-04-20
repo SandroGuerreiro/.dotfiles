@@ -28,3 +28,17 @@ vim.opt.smartindent = true	-- §
 
 vim.g.loaded_netrwPlugin = 1 -- disable netrw
 vim.g.loaded_netrw = 1 -- disable netrw
+
+-- Rounded borders for all floating windows (hover, diagnostics, signature)
+vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
+	vim.lsp.handlers.hover, { border = "rounded" }
+)
+vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
+	vim.lsp.handlers.signature_help, { border = "rounded" }
+)
+vim.diagnostic.config({
+	float = { border = "rounded" },
+	virtual_text = {
+		prefix = "\u{25cf}",
+	},
+})
