@@ -17,11 +17,11 @@ return {
 				indicator = {
 					style = "underline",
 				},
-				buffer_close_icon = "",
-				modified_icon = "●",
-				close_icon = "",
-				left_trunc_marker = "",
-				right_trunc_marker = "",
+				buffer_close_icon = "\u{f00d}",
+				modified_icon = "\u{25cf}",
+				close_icon = "\u{f00d}",
+				left_trunc_marker = "\u{f0141}",
+				right_trunc_marker = "\u{f0142}",
 				separator_style = "thin",
 				show_buffer_close_icons = true,
 				show_close_icon = false,
@@ -31,8 +31,8 @@ return {
 				always_show_bufferline = true,
 				diagnostics = "nvim_lsp",
 				diagnostics_indicator = function(count, level)
-					local icon = level:match("error") and " " or " "
-					return " " .. icon .. count
+					local icon = level:match("error") and "\u{ea87}" or "\u{f071}"
+					return " " .. icon .. " " .. count
 				end,
 				offsets = {
 					{
