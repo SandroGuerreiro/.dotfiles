@@ -8,17 +8,19 @@ require('lsp')
 
 vim.cmd[[colorscheme vscode]]
 
--- Sync bufferline fill/background to the editor background so there's no
--- colour mismatch strip above the editor area.
+-- Tune bufferline colours to match the vscode theme chrome properly:
+-- active tab = editor bg, fill/inactive = TabLineFill (slightly different).
 vim.api.nvim_create_autocmd("ColorScheme", {
 	pattern = "*",
 	callback = function()
-		local normal = vim.api.nvim_get_hl(0, { name = "Normal", link = false })
-		local bg = normal.bg
-		vim.api.nvim_set_hl(0, "BufferLineFill",           { bg = bg })
-		vim.api.nvim_set_hl(0, "BufferLineBackground",     { bg = bg })
-		vim.api.nvim_set_hl(0, "BufferLineTabClose",       { bg = bg })
-		vim.api.nvim_set_hl(0, "BufferLineOffsetSeparator",{ bg = bg, fg = bg })
+		local normal  = vim.api.nvim_get_hl(0, { name = "Normal",      link = false })
+		local tabfill = vim.api.nvim_get_hl(0, { name = "TabLineFill", link = false })
+		local chrome  = tabfill.bg or normal.bg
+		-- Fill and inactive tab area use the theme's tab chrome colour
+		vim.api.nvim_set_hl(0, "BufferLineFill",            { bg = chrome })
+		vim.api.nvim_set_hl(0, "BufferLineTabClose",        { bg = chrome })
+		-- Hide the offset separator line (tree border is enough)
+		vim.api.nvim_set_hl(0, "BufferLineOffsetSeparator", { bg = chrome, fg = chrome })
 	end,
 })
 vim.cmd("doautocmd ColorScheme")
