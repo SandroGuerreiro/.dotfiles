@@ -136,6 +136,51 @@ def get_d_cookie(cookies_db, key):
             os.unlink(tmp_db)
 
 
+def list_slack_tab_ids(app_name):
+    """Return set of tab IDs currently open on *.slack.com in the given browser."""
+    script = f'''
+tell application "{app_name}"
+    set ids to {{}}
+    repeat with w in windows
+        repeat with t in tabs of w
+            try
+                if URL of t contains "slack.com" then
+                    set end of ids to id of t as string
+                end if
+            end try
+        end repeat
+    end repeat
+    set AppleScript's text item delimiters to linefeed
+    return ids as string
+end tell
+'''
+    result = subprocess.run(["osascript", "-e", script], capture_output=True, text=True)
+    return {line.strip() for line in result.stdout.splitlines() if line.strip()}
+
+
+def close_tabs_by_id(app_name, tab_ids):
+    """Close tabs with the given IDs in the given browser. Iterates backwards to keep indices valid."""
+    if not tab_ids:
+        return
+    ids_list = ", ".join(f'"{tid}"' for tid in tab_ids)
+    script = f'''
+tell application "{app_name}"
+    set targetIds to {{{ids_list}}}
+    repeat with w in windows
+        set tabCount to count of tabs of w
+        repeat with i from tabCount to 1 by -1
+            try
+                if targetIds contains ((id of tab i of w) as string) then
+                    close tab i of w
+                end if
+            end try
+        end repeat
+    end repeat
+end tell
+'''
+    subprocess.run(["osascript", "-e", script], capture_output=True)
+
+
 def open_slack_and_wait(app_name, timeout=180):
     """Open app.slack.com and poll until the xoxc token is available (handles login flows)."""
     print(f"No Slack tab found — opening app.slack.com in {app_name}...", file=sys.stderr)
@@ -156,25 +201,31 @@ def get_credentials():
             continue
 
         xoxc = get_xoxc(browser["app_name"])
+        tabs_we_opened = set()
 
         if not xoxc:
+            existing_ids = list_slack_tab_ids(browser["app_name"])
             # Try opening Slack and retrying once (handles login flows too)
             if open_slack_and_wait(browser["app_name"]):
                 xoxc = get_xoxc(browser["app_name"])
+            tabs_we_opened = list_slack_tab_ids(browser["app_name"]) - existing_ids
 
-        if not xoxc:
-            continue
+        try:
+            if not xoxc:
+                continue
 
-        password = get_keychain_password(browser["keychain_service"])
-        if not password:
-            sys.exit(f"ERROR: Could not read '{browser['keychain_service']}' from Keychain.\nGo to System Settings → Privacy & Security → Full Disk Access and add Terminal/iTerm.")
+            password = get_keychain_password(browser["keychain_service"])
+            if not password:
+                sys.exit(f"ERROR: Could not read '{browser['keychain_service']}' from Keychain.\nGo to System Settings → Privacy & Security → Full Disk Access and add Terminal/iTerm.")
 
-        key = derive_key(password)
-        d_cookie = get_d_cookie(browser["cookies_db"], key)
-        if not d_cookie:
-            sys.exit(f"ERROR: Could not decrypt Slack 'd' cookie from {browser['app_name']}.")
+            key = derive_key(password)
+            d_cookie = get_d_cookie(browser["cookies_db"], key)
+            if not d_cookie:
+                sys.exit(f"ERROR: Could not decrypt Slack 'd' cookie from {browser['app_name']}.")
 
-        return xoxc, d_cookie
+            return xoxc, d_cookie
+        finally:
+            close_tabs_by_id(browser["app_name"], tabs_we_opened)
 
     sys.exit("ERROR: Could not find or open Slack in any supported browser.")
 

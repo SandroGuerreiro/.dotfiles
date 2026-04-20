@@ -85,6 +85,8 @@ For each issue found in step 4, launch a validation subagent:
 
 Each validator receives the issue description and relevant context. Their job is to confirm the issue is real with high confidence. For CLAUDE.md issues, verify the rule is scoped to the file and is actually violated.
 
+**Consumption-path validation (mandatory):** For any issue about "missing X" (missing export, missing type, missing test, missing import), the validator MUST trace how the thing is actually consumed downstream. If the absence doesn't break any consumer — e.g. types are inferred from a registry, schemas are resolved at runtime, imports are re-exported elsewhere — the issue is invalid. Never flag something as missing based solely on what neighbouring code does (pattern-matching). Verify the actual consumption path.
+
 ### 6. Filter
 
 Remove any issues that failed validation. Only keep high-signal confirmed issues.
@@ -98,6 +100,7 @@ Remove any issues that failed validation. Only keep high-signal confirmed issues
 - Issues silenced in code (e.g. lint ignore comments)
 - Intentional functionality changes related to the broader change
 - Issues on lines not modified in this change
+- "Missing" exports/types/tests where the thing is consumed through a different mechanism (e.g. type inferred from a schema registry, re-exported elsewhere). Trace the consumption path before flagging.
 
 ### 7. Output report
 

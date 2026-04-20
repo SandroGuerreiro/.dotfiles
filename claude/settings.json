@@ -1,8 +1,5 @@
 {
   "permissions": {
-    "additionalDirectories": [
-      "/Users/sandroguerreiro/Code/Astrolabe"
-    ],
     "allow": [
       "Bash(pnpm tauri build)",
       "Bash(bash scripts/release.sh 0.5.0 \"Test release\")",
@@ -23,9 +20,11 @@
       "Bash(npm test -- libs/fe-checkout-flow/src/lib/gtm-begin-checkout-route-event.spec.tsx --testNamePattern=\"should fire the event with product category when categoryIds match the label\")",
       "Bash(npm ls @storybook/preview-api)",
       "Bash(pnpm ls @storybook/preview-api)"
+    ],
+    "additionalDirectories": [
+      "/Users/sandroguerreiro/Code/Astrolabe"
     ]
   },
-  "model": "opusplan",
   "hooks": {
     "PreToolUse": [
       {
@@ -129,7 +128,8 @@
     "rust-analyzer-lsp@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true,
     "everything-claude-code@everything-claude-code": false,
-    "superpowers@claude-plugins-official": true
+    "superpowers@claude-plugins-official": true,
+    "ui-ux-pro-max@ui-ux-pro-max-skill": true
   },
   "extraKnownMarketplaces": {
     "everything-claude-code": {
@@ -137,6 +137,17 @@
         "source": "github",
         "repo": "affaan-m/everything-claude-code"
       }
+    },
+    "ui-ux-pro-max-skill": {
+      "source": {
+        "source": "github",
+        "repo": "nextlevelbuilder/ui-ux-pro-max-skill"
+      }
     }
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash /Users/sandroguerreiro/.claude/scripts/statusline.sh",
+    "description": "PR | 5h | model"
   }
 }
