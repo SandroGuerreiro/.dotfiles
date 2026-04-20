@@ -38,51 +38,47 @@ keymap('n', '<leader>fb', builtin.buffers, {})
 keymap('n', '<leader>fs', builtin.current_buffer_fuzzy_find, {})
 keymap('n', '<leader>fh', builtin.help_tags, {})
 
--- Barbar keybinds
+-- Neo-tree keybind
 local opts = { noremap = true, silent = true }
+keymap('n', '<leader>e', '<Cmd>Neotree toggle<CR>', opts)
+keymap('n', '<leader>o', '<Cmd>Neotree focus<CR>', opts)
+
+-- Bufferline keybinds
 
 -- Move to previous/next
-keymap('n', '<A-,>', '<Cmd>BufferPrevious<CR>', opts)
-keymap('n', '<A-.>', '<Cmd>BufferNext<CR>', opts)
+keymap('n', '<A-,>', '<Cmd>BufferLineCyclePrev<CR>', opts)
+keymap('n', '<A-.>', '<Cmd>BufferLineCycleNext<CR>', opts)
 
 -- Re-order to previous/next
-keymap('n', '<A-<>', '<Cmd>BufferMovePrevious<CR>', opts)
-keymap('n', '<A->>', '<Cmd>BufferMoveNext<CR>', opts)
+keymap('n', '<A-<>', '<Cmd>BufferLineMovePrev<CR>', opts)
+keymap('n', '<A->>', '<Cmd>BufferLineMoveNext<CR>', opts)
 
 -- Goto buffer in position...
-keymap('n', '<A-1>', '<Cmd>BufferGoto 1<CR>', opts)
-keymap('n', '<A-2>', '<Cmd>BufferGoto 2<CR>', opts)
-keymap('n', '<A-3>', '<Cmd>BufferGoto 3<CR>', opts)
-keymap('n', '<A-4>', '<Cmd>BufferGoto 4<CR>', opts)
-keymap('n', '<A-5>', '<Cmd>BufferGoto 5<CR>', opts)
-keymap('n', '<A-6>', '<Cmd>BufferGoto 6<CR>', opts)
-keymap('n', '<A-7>', '<Cmd>BufferGoto 7<CR>', opts)
-keymap('n', '<A-8>', '<Cmd>BufferGoto 8<CR>', opts)
-keymap('n', '<A-9>', '<Cmd>BufferGoto 9<CR>', opts)
-keymap('n', '<A-0>', '<Cmd>BufferLast<CR>', opts)
+keymap('n', '<A-1>', '<Cmd>BufferLineGoToBuffer 1<CR>', opts)
+keymap('n', '<A-2>', '<Cmd>BufferLineGoToBuffer 2<CR>', opts)
+keymap('n', '<A-3>', '<Cmd>BufferLineGoToBuffer 3<CR>', opts)
+keymap('n', '<A-4>', '<Cmd>BufferLineGoToBuffer 4<CR>', opts)
+keymap('n', '<A-5>', '<Cmd>BufferLineGoToBuffer 5<CR>', opts)
+keymap('n', '<A-6>', '<Cmd>BufferLineGoToBuffer 6<CR>', opts)
+keymap('n', '<A-7>', '<Cmd>BufferLineGoToBuffer 7<CR>', opts)
+keymap('n', '<A-8>', '<Cmd>BufferLineGoToBuffer 8<CR>', opts)
+keymap('n', '<A-9>', '<Cmd>BufferLineGoToBuffer 9<CR>', opts)
+keymap('n', '<A-0>', '<Cmd>BufferLineGoToBuffer -1<CR>', opts)
 
 -- Pin/unpin buffer
-keymap('n', '<A-p>', '<Cmd>BufferPin<CR>', opts)
+keymap('n', '<A-p>', '<Cmd>BufferLineTogglePin<CR>', opts)
 
 -- Close buffer
-keymap('n', '<A-c>', '<Cmd>BufferClose<CR>', opts)
+keymap('n', '<A-c>', '<Cmd>bdelete<CR>', opts)
 
--- Wipeout buffer
---                 :BufferWipeout
--- Close commands
---                 :BufferCloseAllButCurrent
---                 :BufferCloseAllButPinned
---                 :BufferCloseAllButCurrentOrPinned
---                 :BufferCloseBuffersLeft
---                 :BufferCloseBuffersRight
 -- Magic buffer-picking mode
-keymap('n', '<C-p>', '<Cmd>BufferPick<CR>', opts)
+keymap('n', '<C-p>', '<Cmd>BufferLinePick<CR>', opts)
 
 -- Sort automatically by...
-keymap('n', '<Space>bb', '<Cmd>BufferOrderByBufferNumber<CR>', opts)
-keymap('n', '<Space>bd', '<Cmd>BufferOrderByDirectory<CR>', opts)
-keymap('n', '<Space>bl', '<Cmd>BufferOrderByLanguage<CR>', opts)
-keymap('n', '<Space>bw', '<Cmd>BufferOrderByWindowNumber<CR>', opts)
+keymap('n', '<Space>bd', '<Cmd>BufferLineSortByDirectory<CR>', opts)
+keymap('n', '<Space>bl', '<Cmd>BufferLineSortByExtension<CR>', opts)
+keymap('n', '<Space>br', '<Cmd>BufferLineSortByRelativeDirectory<CR>', opts)
+keymap('n', '<Space>bt', '<Cmd>BufferLineSortByTabs<CR>', opts)
 
 -- Terminal keybinds
 keymap('t', '<C-n>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })

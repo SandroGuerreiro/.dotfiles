@@ -1,7 +1,9 @@
-,# Font
-font-family = FiraCode Nerd Font Mono
+# Font
+font-family = GeistMono NFM
 font-size = 14
 font-thicken = true
+font-feature = +calt
+font-feature = +liga
 
 # Nord theme
 background = 2E3440
