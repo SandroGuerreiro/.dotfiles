@@ -40,7 +40,7 @@ return {
 						filetype = "neo-tree",
 						text = "\u{e5ff}  Explorer",
 						text_align = "left",
-						highlight = "Directory",
+						highlight = "NeoTreeNormal",
 						separator = true,
 					},
 				},
