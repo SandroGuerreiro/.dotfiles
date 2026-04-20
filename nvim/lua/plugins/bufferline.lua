@@ -15,14 +15,15 @@ return {
 				close_command = "bdelete! %d",
 				right_mouse_command = "bdelete! %d",
 				indicator = {
-					style = "underline",
+					icon = "\u{258f}",
+					style = "icon",
 				},
 				buffer_close_icon = "\u{f00d}",
 				modified_icon = "\u{25cf}",
 				close_icon = "\u{f00d}",
 				left_trunc_marker = "\u{f0141}",
 				right_trunc_marker = "\u{f0142}",
-				separator_style = "thin",
+				separator_style = "slant",
 				show_buffer_close_icons = true,
 				show_close_icon = false,
 				show_tab_indicators = true,
@@ -37,8 +38,9 @@ return {
 				offsets = {
 					{
 						filetype = "neo-tree",
-						text = "Explorer",
+						text = "\u{e5ff}  Explorer",
 						text_align = "left",
+						highlight = "Directory",
 						separator = true,
 					},
 				},
