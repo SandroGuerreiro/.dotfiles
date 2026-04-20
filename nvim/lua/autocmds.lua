@@ -29,7 +29,7 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 
 vim.api.nvim_create_autocmd("VimEnter", {
 	callback = function()
-		vim.cmd("NvimTreeOpen")
+		vim.cmd("Neotree show")
 	end,
 })
 
