@@ -1,9 +1,10 @@
 return {
   "nvim-treesitter/nvim-treesitter",
+  branch = "main",
   build = ":TSUpdate",
   config = function()
-    require("nvim-treesitter.configs").setup({
-      ensure_installed = {
+    require("nvim-treesitter").setup({
+      ensure_install = {
         "lua",
         "typescript",
         "tsx",
@@ -18,8 +19,6 @@ return {
         "bash",
         "markdown",
       },
-      highlight = { enable = true },
-      indent = { enable = true },
     })
   end,
 }

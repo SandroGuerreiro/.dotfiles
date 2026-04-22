@@ -85,6 +85,7 @@ return {
 					event = "neo_tree_buffer_enter",
 					handler = function()
 						vim.cmd([[setlocal relativenumber]])
+						vim.opt_local.winbar = "%#NeoTreeNormal# "
 					end,
 				},
 			},

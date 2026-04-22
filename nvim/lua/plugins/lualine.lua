@@ -3,11 +3,32 @@ return {
 	dependencies = { "nvim-tree/nvim-web-devicons" },
 	event = "VeryLazy",
 	config = function()
+		local mid_bg = "#2D2D2D"
+		local mid_fg = "#D4D4D4"
+		local white  = "#ffffff"
+
+		local function section(color)
+			return { a = { bg = color,  fg = white,  gui = "bold" },
+			         b = { bg = color,  fg = white },
+			         c = { bg = mid_bg, fg = mid_fg } }
+		end
+
+		local cursor_theme = {
+			normal   = section("#0078D4"),
+			insert   = section("#27A244"),
+			visual   = section("#BF7B1B"),
+			replace  = section("#C72E0F"),
+			command  = section("#7B2FBE"),
+			inactive = { a = { bg = mid_bg, fg = mid_fg },
+			             b = { bg = mid_bg, fg = mid_fg },
+			             c = { bg = mid_bg, fg = mid_fg } },
+		}
+
 		require("lualine").setup({
 			options = {
-				theme = "vscode",
-				component_separators = { left = "\u{e0b5}", right = "\u{e0b7}" },
-				section_separators = { left = "", right = "" },
+				theme = cursor_theme,
+				component_separators = { left = "", right = "" },
+				section_separators = { left = "\u{e0b0}", right = "\u{e0b2}" },
 				globalstatus = true,
 				disabled_filetypes = {
 					statusline = { "neo-tree", "lazy", "mason" },
