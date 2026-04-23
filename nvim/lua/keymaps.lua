@@ -68,8 +68,23 @@ keymap('n', '<A-0>', '<Cmd>BufferLineGoToBuffer -1<CR>', opts)
 -- Pin/unpin buffer
 keymap('n', '<A-p>', '<Cmd>BufferLineTogglePin<CR>', opts)
 
--- Close buffer
-keymap('n', '<A-c>', '<Cmd>bdelete<CR>', opts)
+-- Close buffer without quitting nvim
+keymap('n', '<A-c>', function()
+  local bufnr = vim.api.nvim_get_current_buf()
+  local listed = vim.fn.getbufinfo({ buflisted = 1 })
+  if #listed <= 1 then
+    vim.cmd("enew")
+    vim.schedule(function()
+      vim.api.nvim_buf_delete(bufnr, { force = true })
+    end)
+  else
+    vim.cmd("BufferLineCycleNext")
+    if vim.api.nvim_get_current_buf() == bufnr then
+      vim.cmd("BufferLineCyclePrev")
+    end
+    vim.api.nvim_buf_delete(bufnr, { force = true })
+  end
+end, opts)
 
 -- Magic buffer-picking mode
 keymap('n', '<C-p>', '<Cmd>BufferLinePick<CR>', opts)

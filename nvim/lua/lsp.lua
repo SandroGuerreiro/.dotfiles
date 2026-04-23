@@ -16,6 +16,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, opts)
     vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
     vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
+    vim.keymap.set('n', '<C-LeftMouse>', vim.lsp.buf.definition, opts)
   end,
 })
 
@@ -25,4 +26,8 @@ vim.lsp.config('gopls', { capabilities = capabilities })
 vim.lsp.config('rust_analyzer', { capabilities = capabilities })
 vim.lsp.config('eslint', { capabilities = capabilities })
 
-vim.lsp.enable({ 'lua_ls', 'gopls', 'rust_analyzer', 'eslint' })
+local servers = { 'lua_ls', 'gopls', 'rust_analyzer' }
+if vim.fn.executable('vscode-eslint-language-server') == 1 then
+  table.insert(servers, 'eslint')
+end
+vim.lsp.enable(servers)

@@ -28,6 +28,21 @@ return {
 					fg = "#A8A8A8",
 					bg = "#464646",
 				},
+				duplicate = {
+					fg = "#569CD6",
+					bg = "#464646",
+					italic = false,
+				},
+				duplicate_selected = {
+					fg = "#569CD6",
+					bg = "#2A2A2A",
+					italic = false,
+				},
+				duplicate_visible = {
+					fg = "#569CD6",
+					bg = "#464646",
+					italic = false,
+				},
 				close_button = {
 					fg = "#A8A8A8",
 					bg = "#464646",
@@ -114,8 +129,24 @@ return {
 				mode = "buffers",
 				themable = true,
 				numbers = "none",
-				close_command = "bdelete! %d",
-				right_mouse_command = "bdelete! %d",
+				close_command = function(bufnr)
+					if vim.api.nvim_get_current_buf() == bufnr then
+						vim.cmd("BufferLineCycleNext")
+						if vim.api.nvim_get_current_buf() == bufnr then
+							vim.cmd("BufferLineCyclePrev")
+						end
+					end
+					vim.api.nvim_buf_delete(bufnr, { force = true })
+				end,
+				right_mouse_command = function(bufnr)
+					if vim.api.nvim_get_current_buf() == bufnr then
+						vim.cmd("BufferLineCycleNext")
+						if vim.api.nvim_get_current_buf() == bufnr then
+							vim.cmd("BufferLineCyclePrev")
+						end
+					end
+					vim.api.nvim_buf_delete(bufnr, { force = true })
+				end,
 				name_formatter = function(buf)
 					return " " .. buf.name .. " "
 				end,

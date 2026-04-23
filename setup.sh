@@ -29,3 +29,7 @@ $ghostty_setup
 claude_setup="${base_path}claude/setup.sh"
 chmod +x "$claude_setup"
 $claude_setup
+
+tooling_setup="${base_path}tooling/setup.sh"
+chmod +x "$tooling_setup"
+$tooling_setup

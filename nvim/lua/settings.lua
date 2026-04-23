@@ -18,6 +18,7 @@ opt.formatoptions:append('cro') -- continue comments when going down a line, hit
 opt.sessionoptions:remove('options') -- don't save keymaps and local options
 opt.foldlevelstart = 99 	-- no auto folding
 opt.clipboard = 'unnamedplus'	-- Yank goes to system clipboard
+opt.mouse = 'a'			-- Enable mouse support
 
 -- Indentation
 local tabs = 2

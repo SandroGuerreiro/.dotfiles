@@ -12,6 +12,9 @@ return {
 		local telescope = require('telescope')
 		local lga_actions = require('telescope-live-grep-args.actions')
 		telescope.setup({
+			defaults = {
+				preview = { treesitter = false },
+			},
 			extensions = {
 				live_grep_args = {
 					auto_quoting = false,
