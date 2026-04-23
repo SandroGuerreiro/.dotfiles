@@ -7,12 +7,11 @@ return {
     need = 1,
   },
   config = function(_, opts)
-    local persistence = require("persistence")
-    persistence.setup(opts)
-    -- Collapse to a single window before saving so splits aren't restored
+    -- Register cleanup before persistence.setup so it fires first on VimLeavePre
     vim.api.nvim_create_autocmd("VimLeavePre", {
       callback = function()
         pcall(vim.cmd, "Neotree close")
+        pcall(vim.cmd, "only")
         for _, buf in ipairs(vim.api.nvim_list_bufs()) do
           if vim.api.nvim_buf_is_valid(buf)
             and vim.bo[buf].buftype == ""
@@ -22,16 +21,25 @@ return {
             pcall(vim.api.nvim_buf_delete, buf, {})
           end
         end
-        pcall(vim.cmd, "only")
       end,
     })
+    local persistence = require("persistence")
+    persistence.setup(opts)
     -- Auto-restore only when nvim is opened with no file arguments
     if vim.fn.argc() == 0 then
       vim.defer_fn(function()
         persistence.load()
         vim.defer_fn(function()
-          vim.schedule(function() pcall(vim.cmd, "Neotree show") end)
-        end, 150)
+          vim.schedule(function()
+          for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+            local name = vim.api.nvim_buf_get_name(buf)
+            if name:match("neo%-tree") or vim.bo[buf].filetype == "neo-tree" then
+              pcall(vim.api.nvim_buf_delete, buf, { force = true })
+            end
+          end
+          pcall(vim.cmd, "Neotree show")
+        end)
+        end, 300)
       end, 100)
     end
   end,

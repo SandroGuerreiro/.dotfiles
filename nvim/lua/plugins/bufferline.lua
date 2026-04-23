@@ -127,6 +127,11 @@ return {
 			},
 			options = {
 				mode = "buffers",
+				custom_filter = function(bufnr)
+					if vim.bo[bufnr].filetype == "neo-tree" then return false end
+					if vim.api.nvim_buf_get_name(bufnr) == "" then return false end
+					return true
+				end,
 				themable = true,
 				numbers = "none",
 				close_command = function(bufnr)

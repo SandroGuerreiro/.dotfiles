@@ -14,6 +14,10 @@ return {
 		telescope.setup({
 			defaults = {
 				preview = { treesitter = false },
+				sorting_strategy = 'ascending',
+				layout_config = {
+					prompt_position = 'top',
+				},
 			},
 			extensions = {
 				live_grep_args = {

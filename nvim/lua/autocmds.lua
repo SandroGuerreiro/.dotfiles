@@ -27,12 +27,6 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 	end,
 })
 
-vim.api.nvim_create_autocmd("VimEnter", {
-	callback = function()
-		vim.schedule(function() pcall(vim.cmd, "Neotree show") end)
-	end,
-})
-
 -- Cursor Default Dark+ theme overrides
 vim.api.nvim_create_autocmd("ColorScheme", {
 	pattern = "*",
