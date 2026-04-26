@@ -36,7 +36,8 @@ else
 	git -C "$plugins_path/tpm" pull
 fi
 
-tmux source "$dest_path"
+# Source the conf into a running server if one exists; ignore if not (fresh machine).
+tmux source "$dest_path" 2>/dev/null || true
 echo "Installing plugins"
 $plugins_path/tpm/scripts/install_plugins.sh
 echo "[$setup_name] installed"

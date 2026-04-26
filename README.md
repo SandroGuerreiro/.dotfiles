@@ -1,29 +1,33 @@
 # .dotfiles config
 
-This repository is used to setup my entire dotfiles config.
+This repository is used to setup my entire dotfiles config. Cross-platform: macOS and Linux.
 
 ## Installation
 
-To install these .dotfiles you will need only need to run the setup.sh file, however there are a few requirements before it can be run.
-
-### Requirements
-
-- alacritty
-- git
-- tmux
-- nvim
-
-**In case you want to skip any of these configs you can delete the lines in the [setup file](.dotfiles/setup.sh)**
-
-After that, all you need to do is run setup.sh in the base directory.
-```bash
-./setup.sh
-```
-You will probably need to give permissions on the main setup.sh file. You can do that by:
 ```bash
 chmod +x ./setup.sh
+./setup.sh
 ```
+
+`setup.sh` will:
+
+1. Detect your package manager (brew / dnf / apt / pacman) and install any missing required tools (zsh, tmux, neovim, nodejs, curl, unzip) plus optional GUI tools (alacritty, ghostty) if they're available in your repos.
+2. Run each component's individual setup script to symlink configs, install plugins, and fetch fonts.
+
+On Linux you'll be prompted for `sudo` once for the package install. On macOS, `brew` does not require sudo.
+
+If your distro doesn't ship one of the optional GUI tools (e.g. ghostty on Debian/Ubuntu), install it manually — see the project's homepage.
+
+**To skip a component**, comment out its line near the bottom of [`setup.sh`](./setup.sh).
 
 ### zsh vars
 
-Zsh vars will not contain any secrets, these secrets will be contained in a separate file that is not included in this project. After you run the setup, you will find in your home path, the file .zshrc_secrets where you can insert all vars you desire
+Zsh vars do not contain any secrets. Secrets live in `~/.zshrc_secrets`, which is created (empty) by the ohmyzsh setup. Add your private exports there — it's never committed.
+
+### Claude Code settings
+
+`claude/settings.json.tmpl` is rendered into `~/.claude/settings.json` by `claude/setup.sh` (the `__HOME__` placeholder is substituted with the actual `$HOME`). **Edit the template, not the generated file.**
+
+The default template references hooks that live in a sibling repo (`~/Code/everything-claude-code`). If you don't have it cloned, those hooks will fail at runtime — clone the repo or remove the relevant hook entries from the template.
+
+`additionalDirectories` points at `~/Code/Astrolabe` — remove if you don't have that repo locally.

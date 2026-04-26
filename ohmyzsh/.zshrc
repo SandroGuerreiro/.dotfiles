@@ -9,9 +9,26 @@ export VAULT_AUTH_TOKEN=""
 
 DISABLE_MAGIC_FUNCTIONS=true
 
-# Mysql
-export LDFLAGS="-L/opt/homebrew/opt/mysql-client/lib"
-export CPPFLAGS="-I/opt/homebrew/opt/mysql-client/include"
+# OS detection
+case "$(uname -s)" in
+  Darwin) IS_MAC=1 ;;
+  Linux)  IS_LINUX=1 ;;
+esac
+
+# Homebrew prefix (mac uses /opt/homebrew on Apple Silicon, /usr/local on Intel)
+if [ -n "$IS_MAC" ]; then
+  if [ -x /opt/homebrew/bin/brew ]; then
+    BREW_PREFIX=/opt/homebrew
+  elif [ -x /usr/local/bin/brew ]; then
+    BREW_PREFIX=/usr/local
+  fi
+fi
+
+# Mysql client (mac/homebrew)
+if [ -n "$IS_MAC" ] && [ -d "$BREW_PREFIX/opt/mysql-client" ]; then
+  export LDFLAGS="-L$BREW_PREFIX/opt/mysql-client/lib"
+  export CPPFLAGS="-I$BREW_PREFIX/opt/mysql-client/include"
+fi
 
 # Path configuration
 export PATH="$HOME/.local/bin":$PATH
@@ -21,9 +38,13 @@ setopt AUTO_CD
 # cdpath: search ~/Code when a name doesn't match a local directory
 cdpath=(~/Code)
 
-# Nvm configuration
-export NVM_DIR=~/.nvm
-source $(brew --prefix nvm)/nvm.sh
+# Nvm configuration — try common locations across platforms
+export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
+if [ -n "$IS_MAC" ] && [ -n "$BREW_PREFIX" ] && [ -s "$BREW_PREFIX/opt/nvm/nvm.sh" ]; then
+  source "$BREW_PREFIX/opt/nvm/nvm.sh"
+elif [ -s "$NVM_DIR/nvm.sh" ]; then
+  source "$NVM_DIR/nvm.sh"
+fi
 
 # Git aliases
 alias gs="git status"
@@ -97,7 +118,11 @@ fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
 source $ZSH/oh-my-zsh.sh
 
 # pnpm
-export PNPM_HOME="/Users/sandroguerreiro/Library/pnpm"
+if [ -n "$IS_MAC" ]; then
+  export PNPM_HOME="$HOME/Library/pnpm"
+else
+  export PNPM_HOME="$HOME/.local/share/pnpm"
+fi
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;

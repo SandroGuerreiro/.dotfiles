@@ -38,7 +38,7 @@ window-padding-color = background
 macos-option-as-alt = left
 
 # Shell — launch tmux automatically
-command = /opt/homebrew/bin/tmux new-session -D -f "$HOME/.tmux.conf"
+command = tmux new-session -D -f "$HOME/.tmux.conf"
 
 # Working directory
 working-directory = ~/Code

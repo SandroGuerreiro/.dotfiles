@@ -7,9 +7,8 @@ dest_path="$HOME/.claude"
 # Ensure ~/.claude exists (Claude creates it on first run, but just in case)
 mkdir -p "$dest_path"
 
-# Portable config: these directories and files get symlinked
+# Portable config: these directories get symlinked
 dirs=(agents commands rules scripts)
-files=(settings.json)
 
 # Symlink directories
 for dir in "${dirs[@]}"; do
@@ -31,24 +30,23 @@ for dir in "${dirs[@]}"; do
 	ln -s "$origin" "$target"
 done
 
-# Symlink files
-for file in "${files[@]}"; do
-	origin="$base_path/$file"
-	target="$dest_path/$file"
+# Render settings.json from template (substitutes $HOME so it works on any machine).
+# Generated file, not symlinked — edit the .tmpl in this repo, not ~/.claude/settings.json.
+template="$base_path/settings.json.tmpl"
+target="$dest_path/settings.json"
 
-	if [ -e "$target" ] && [ ! -L "$target" ]; then
-		read -p "There's an existing [$setup_name/$file] config in your environment, do you want to replace it? (y/n) " yn
-		case $yn in
-			[nN] )	echo "Skipping $file"
-				continue;;
-		esac
-		rm "$target"
-	elif [ -L "$target" ]; then
-		rm "$target"
-	fi
-
-	echo "Creating [$setup_name/$file] symlink"
-	ln -s "$origin" "$target"
-done
+if [ -e "$target" ] && [ ! -L "$target" ]; then
+	read -p "There's an existing [$setup_name/settings.json] in your environment, do you want to replace it? (y/n) " yn
+	case $yn in
+		[nN] )	echo "Skipping settings.json" ;;
+		*)	rm -f "$target"
+			echo "Rendering [$setup_name/settings.json] from template"
+			sed "s|__HOME__|$HOME|g" "$template" > "$target" ;;
+	esac
+else
+	[ -L "$target" ] && rm "$target"
+	echo "Rendering [$setup_name/settings.json] from template"
+	sed "s|__HOME__|$HOME|g" "$template" > "$target"
+fi
 
 echo "[$setup_name] installed"

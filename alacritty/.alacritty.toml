@@ -37,7 +37,7 @@ style = "Regular"
 
 [terminal.shell]
 args = ["new-session", "-D", '-f "$HOME/.tmux.conf"']
-program = "/opt/homebrew/bin/tmux"
+program = "tmux"
 
 [window]
 opacity = 0.9

@@ -1,2 +1,4 @@
 .DS_Store
 nvim/lazy-lock.json
+# Per-machine Claude Code permissions (paths and approvals are local state)
+.claude/settings.local.json
