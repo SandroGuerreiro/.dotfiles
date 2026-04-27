@@ -82,6 +82,26 @@ else
 fi
 
 # ────────────────────────────────────────────────────────────────────────
+# Component selection
+# ────────────────────────────────────────────────────────────────────────
+
+all_components=(ssh alacritty git ohmyzsh nvim tmux ghostty claude tooling)
+[ "$(uname)" = "Linux" ] && all_components+=(linux)
+to_run=()
+
+echo ""
+echo "Select components to install (Enter = yes):"
+echo ""
+for comp in "${all_components[@]}"; do
+	read -p "  $(printf '%-12s' "$comp") [Y/n] " yn
+	case "${yn:-y}" in
+		[nN]) ;;
+		*) to_run+=("$comp") ;;
+	esac
+done
+echo ""
+
+# ────────────────────────────────────────────────────────────────────────
 # Component setup
 # ────────────────────────────────────────────────────────────────────────
 
@@ -91,11 +111,6 @@ run_setup() {
 	"$script"
 }
 
-run_setup "${base_path}alacritty/setup.sh"
-run_setup "${base_path}git/setup.sh"
-run_setup "${base_path}ohmyzsh/setup.sh"
-run_setup "${base_path}nvim/setup.sh"
-run_setup "${base_path}tmux/setup.sh"
-run_setup "${base_path}ghostty/setup.sh"
-run_setup "${base_path}claude/setup.sh"
-run_setup "${base_path}tooling/setup.sh"
+for comp in "${to_run[@]}"; do
+	run_setup "${base_path}${comp}/setup.sh"
+done

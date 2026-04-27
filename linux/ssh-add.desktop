@@ -1,0 +1,6 @@
+[Desktop Entry]
+Exec=env SSH_ASKPASS=/usr/bin/ksshaskpass SSH_ASKPASS_REQUIRE=prefer ssh-add ~/.ssh/id_ed25519
+Hidden=false
+Name=SSH Key Add
+Type=Application
+X-KDE-autostart-condition=ssh-agent
