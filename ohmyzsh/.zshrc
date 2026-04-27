@@ -46,6 +46,25 @@ elif [ -s "$NVM_DIR/nvm.sh" ]; then
   source "$NVM_DIR/nvm.sh"
 fi
 
+# Editor
+export EDITOR=nvim
+export VISUAL=nvim
+# Override `sudo nvim` / `sudo vim` to preserve your user config.
+# Plain `sudo nvim` runs as root with no plugins (gives you netrw).
+sudo() {
+  if [[ "$1" == "nvim" || "$1" == "vim" ]]; then
+    shift
+    command sudo -E HOME="$HOME" \
+      XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}" \
+      XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}" \
+      XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}" \
+      XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}" \
+      nvim "$@"
+  else
+    command sudo "$@"
+  fi
+}
+
 # Git aliases
 alias gs="git status"
 alias gco="git checkout --track -b origin/"

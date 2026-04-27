@@ -28,7 +28,7 @@ return {
     -- Auto-restore only when nvim is opened with no file arguments
     if vim.fn.argc() == 0 then
       vim.defer_fn(function()
-        persistence.load()
+        pcall(persistence.load)
         vim.defer_fn(function()
           vim.schedule(function()
           for _, buf in ipairs(vim.api.nvim_list_bufs()) do
@@ -40,6 +40,10 @@ return {
           pcall(vim.cmd, "Neotree show")
         end)
         end, 300)
+      end, 100)
+    else
+      vim.defer_fn(function()
+        pcall(vim.cmd, "Neotree show")
       end, 100)
     end
   end,

@@ -50,9 +50,18 @@ install_font_linux() {
 }
 
 case "$(uname -s)" in
-	Darwin) install_font_mac ;;
-	Linux)  install_font_linux ;;
-	*)      echo "[$setup_name] warning: unknown OS, skipping font install" ;;
+	Darwin)
+		install_font_mac
+		font_size=14
+		;;
+	Linux)
+		install_font_linux
+		font_size=11
+		;;
+	*)
+		echo "[$setup_name] warning: unknown OS, skipping font install"
+		font_size=14
+		;;
 esac
 
 if [ -e "$dest_path" ]; then
@@ -68,5 +77,7 @@ fi
 
 mkdir -p "$dest_dir"
 ln -s "$origin_path" "$dest_path"
+
+echo "font-size = $font_size" > "$dest_dir/config.local"
 
 echo "[$setup_name] installed"
