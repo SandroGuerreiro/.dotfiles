@@ -78,6 +78,12 @@ fi
 mkdir -p "$dest_dir"
 ln -s "$origin_path" "$dest_path"
 
-echo "font-size = $font_size" > "$dest_dir/config.local"
+{
+	echo "font-size = $font_size"
+	if [ "$(uname -s)" = "Linux" ]; then
+		# Hide GTK titlebar so terminal background (and opacity) fills the whole window.
+		echo "gtk-titlebar = false"
+	fi
+} > "$dest_dir/config.local"
 
 echo "[$setup_name] installed"

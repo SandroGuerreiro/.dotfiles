@@ -6,7 +6,7 @@ font-feature = +calt
 font-feature = +liga
 
 # Nord theme
-background = 1E1E1E
+background = 2E3440
 foreground = D8DEE9
 
 # Nord palette (black, red, green, yellow, blue, magenta, cyan, white)
@@ -30,11 +30,9 @@ palette = 14=#8FBCBB
 palette = 15=#ECEFF4
 
 # Window
-background-opacity = 0.9
-window-padding-x = 10
-window-padding-y = 10
-window-padding-balance = true
-window-padding-color = background
+background-opacity = 0.75
+window-padding-x = 0
+window-padding-y = 0
 macos-option-as-alt = left
 
 # Shell — launch tmux automatically
