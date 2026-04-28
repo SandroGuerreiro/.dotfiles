@@ -30,7 +30,7 @@ palette = 14=#8FBCBB
 palette = 15=#ECEFF4
 
 # Window
-background-opacity = 0.75
+background-opacity = 0.85
 window-padding-x = 0
 window-padding-y = 0
 macos-option-as-alt = left
