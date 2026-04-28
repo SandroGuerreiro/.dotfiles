@@ -1,0 +1,5 @@
+# Generated 2026-04-24T13:57:52.957Z
+# 1181 unique lang/country hits from /Users/sandroguerreiro/Code/.dotfiles/tooling/recharge-placeholder-scan/needs-attention.csv
+# Key format: ...getproductbrandsbycategoryandcountry-<category>-<country>-<lang>-<...>-<hash>
+# Backend only — FE cache repopulates from refreshed backend, no need to clear it.
+
