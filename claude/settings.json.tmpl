@@ -25,7 +25,21 @@
       "__HOME__/Code/Astrolabe"
     ]
   },
+  "claudeMdExcludes": [
+    "**/.dotfiles/claude/rules/rust/**",
+    "**/.dotfiles/claude/rules/typescript/**"
+  ],
   "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash __HOME__/.claude/scripts/load-lang-rules.sh"
+          }
+        ]
+      }
+    ],
     "PreToolUse": [
       {
         "matcher": "Write",
