@@ -2,6 +2,8 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+export DOTFILES="$HOME/Code/.dotfiles"
+
 # Vault configuration
 export VAULT_ADDR=""
 export VAULT_AUTH_METHOD=github
@@ -69,6 +71,8 @@ sudo() {
 alias gs="git status"
 alias gco="git checkout --track -b origin/"
 alias gcm="git commit -m "
+
+source "$DOTFILES/ohmyzsh/git-functions.zsh"
 
 # Add 'code' alias for navigating to ~/Code with autocompletion
 alias coding="cd ~/Code"
