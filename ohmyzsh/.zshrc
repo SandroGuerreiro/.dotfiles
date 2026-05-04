@@ -1,3 +1,10 @@
+# Auto-launch tmux in Ghostty — kept at the very top so we exec into tmux
+# before oh-my-zsh / p10k / plugins / nvm load (~1s startup otherwise).
+# PATH is already set by /etc/zprofile, so tmux is findable here.
+if [[ -z "$TMUX" ]] && [[ -n "$GHOSTTY_RESOURCES_DIR" ]] && command -v tmux &>/dev/null; then
+  exec tmux new-session -D -f "$HOME/.tmux.conf"
+fi
+
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
