@@ -30,9 +30,17 @@ keymap('n', '<M-q>', '<cmd>q<cr>')
 
 -- Telescope keybinds
 local builtin = require('telescope.builtin')
-keymap('n', '<leader>ff', builtin.find_files, {})
+keymap('n', '<leader>ff', function()
+	builtin.find_files({
+		hidden = true,
+		no_ignore = true,
+		find_command = { 'fd', '--type', 'f', '--hidden', '--no-ignore', '--exclude', '.git', '--exclude', 'node_modules' },
+	})
+end, {})
 keymap('n', '<leader>fg', function()
-	require('telescope').extensions.live_grep_args.live_grep_args()
+	require('telescope').extensions.live_grep_args.live_grep_args({
+		additional_args = { '--hidden', '--no-ignore', '--glob', '!.git', '--glob', '!node_modules' },
+	})
 end, {})
 keymap('n', '<leader>fb', builtin.buffers, {})
 keymap('n', '<leader>fs', builtin.current_buffer_fuzzy_find, {})
