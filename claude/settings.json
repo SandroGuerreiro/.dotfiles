@@ -25,6 +25,7 @@
       "/Users/sandroguerreiro/Code/Astrolabe"
     ]
   },
+  "model": "sonnet",
   "hooks": {
     "PreToolUse": [
       {
@@ -134,7 +135,8 @@
     "everything-claude-code@everything-claude-code": false,
     "superpowers@claude-plugins-official": true,
     "ui-ux-pro-max@ui-ux-pro-max-skill": true,
-    "banana-claude@banana-claude-marketplace": true
+    "banana-claude@banana-claude-marketplace": true,
+    "lua-lsp@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "everything-claude-code": {
