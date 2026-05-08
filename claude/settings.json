@@ -104,6 +104,17 @@
         ]
       }
     ],
+    "UserPromptSubmit": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash /Users/sandroguerreiro/.claude/scripts/update-session-pointer.sh"
+          }
+        ]
+      }
+    ],
     "Stop": [
       {
         "matcher": "*",
