@@ -25,7 +25,6 @@
       "/Users/sandroguerreiro/Code/Astrolabe"
     ]
   },
-  "model": "sonnet",
   "hooks": {
     "PreToolUse": [
       {
