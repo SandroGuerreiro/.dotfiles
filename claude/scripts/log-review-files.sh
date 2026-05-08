@@ -4,11 +4,12 @@
 
 INPUT=$(cat)
 
-# Only process Agent tool calls
 TOOL_NAME=$(echo "$INPUT" | jq -r '.tool_name // empty' 2>/dev/null)
 [ "$TOOL_NAME" = "Agent" ] || exit 0
 
-# Extract text output — try multiple possible response shapes
+CLAUDE_SESSION=$(echo "$INPUT" | jq -r '.session_id // empty' 2>/dev/null)
+[ -n "$CLAUDE_SESSION" ] || exit 0
+
 OUTPUT=$(echo "$INPUT" | jq -r '
   if (.tool_response | type) == "string" then .tool_response
   elif (.tool_response.content | type) == "string" then .tool_response.content
@@ -17,16 +18,10 @@ OUTPUT=$(echo "$INPUT" | jq -r '
 
 [ -n "$OUTPUT" ] || exit 0
 
-# Only process if this looks like a code review output
 echo "$OUTPUT" | grep -qiE '\b(CRITICAL|HIGH|MEDIUM|LOW|BLOCK|WARN|APPROVE|code review)\b' || exit 0
 
-if [ -n "$TMUX" ]; then
-  SESSION_ID=$(tmux display-message -p '#{session_name}:#{window_index}' 2>/dev/null)
-fi
-SESSION_ID="${SESSION_ID:-$$}"
-LOGFILE="/tmp/claude-review-files-${SESSION_ID}.log"
+LOGFILE="/tmp/claude-review-files-${CLAUDE_SESSION}.log"
 
-# Extract all file paths from the review output and log those that exist on disk
 echo "$OUTPUT" | \
   grep -oE '[a-zA-Z0-9_./-]+\.(ts|tsx|js|jsx|py|rs|go|lua|sh|json|yaml|yml|toml)' | \
   while read -r FILE; do

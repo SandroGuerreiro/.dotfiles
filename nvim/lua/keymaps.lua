@@ -134,13 +134,29 @@ end, { desc = 'Go to file (opens in buffer above)' })
 
 -- Pick from files Claude has touched or that need review attention
 keymap('n', '<leader>cf', function()
-  local session_id = vim.fn.system("tmux display-message -p '#{session_name}:#{window_index}' 2>/dev/null"):gsub('%s+$', '')
-  if session_id == '' then
-    session_id = 'default'
+  local tmux_pane = vim.fn.getenv('TMUX_PANE')
+  local window_id = 'default'
+  if tmux_pane and tmux_pane ~= vim.NIL and tmux_pane ~= '' then
+    window_id = vim.fn.system("tmux display-message -p -t " .. tmux_pane .. " '#{session_name}:#{window_id}' 2>/dev/null"):gsub('%s+$', '')
   end
 
-  local touched_log = '/tmp/claude-files-' .. session_id .. '.log'
-  local review_log  = '/tmp/claude-review-files-' .. session_id .. '.log'
+  local pointer = '/tmp/claude-current-session-' .. window_id
+  local claude_session = ''
+  if vim.fn.filereadable(pointer) == 1 then
+    local f = io.open(pointer, 'r')
+    if f then
+      claude_session = f:read('*l') or ''
+      f:close()
+    end
+  end
+
+  if claude_session == '' then
+    vim.notify('No active Claude session found for this window', vim.log.levels.WARN)
+    return
+  end
+
+  local touched_log = '/tmp/claude-files-' .. claude_session .. '.log'
+  local review_log  = '/tmp/claude-review-files-' .. claude_session .. '.log'
 
   local seen = {}
   local files = {}
@@ -160,14 +176,25 @@ keymap('n', '<leader>cf', function()
   end
 
   if #files == 0 then
-    vim.notify('No files logged yet — start a Claude session first', vim.log.levels.WARN)
+    vim.notify('No files logged for this Claude session yet', vim.log.levels.WARN)
     return
   end
 
   vim.cmd('wincmd k')
   require('telescope.pickers').new({}, {
     prompt_title = 'Claude Files',
-    finder = require('telescope.finders').new_table({ results = files }),
+    finder = require('telescope.finders').new_table({
+      results = files,
+      entry_maker = function(path)
+        local filename = vim.fn.fnamemodify(path, ':t')
+        local dir = vim.fn.fnamemodify(path, ':h')
+        return {
+          value = path,
+          display = filename .. '  ' .. dir,
+          ordinal = filename .. ' ' .. path,
+        }
+      end,
+    }),
     sorter = require('telescope.config').values.generic_sorter({}),
     previewer = require('telescope.config').values.file_previewer({}),
   }):find()
