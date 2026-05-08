@@ -49,4 +49,9 @@ else
 	sed "s|__HOME__|$HOME|g" "$template" > "$target"
 fi
 
+# Register git filter to ignore the `model` field in settings.json commits
+git config --global filter.strip-claude-model.clean 'jq "del(.model)"'
+git config --global filter.strip-claude-model.smudge 'cat'
+echo "Registered [git filter] strip-claude-model"
+
 echo "[$setup_name] installed"
