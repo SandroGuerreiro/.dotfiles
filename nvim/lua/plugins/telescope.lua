@@ -1,6 +1,5 @@
 return {
 	'nvim-telescope/telescope.nvim',
-	branch = '0.1.x',
 	dependencies = {
 		'nvim-lua/plenary.nvim',
 		'nvim-treesitter/nvim-treesitter',
@@ -15,6 +14,7 @@ return {
 			defaults = {
 				preview = { treesitter = false },
 				sorting_strategy = 'ascending',
+				path_display = { 'filename_first' },
 				layout_config = {
 					prompt_position = 'top',
 				},
