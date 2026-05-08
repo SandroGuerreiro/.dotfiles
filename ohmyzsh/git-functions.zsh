@@ -94,6 +94,20 @@ gsk() {
     local rpath="${repo_paths[$i]}"
     printf "  ${B}%s${X}\n" "$rname"
 
+    # Auto-commit Astrolabe uncommitted changes before syncing
+    if [[ ${dirtycounts[$i]} -gt 0 && "$rpath" == "${HOME}/Code/Astrolabe" ]]; then
+      git -C "$rpath" add -A
+      local commit_err
+      commit_err="$(git -C "$rpath" commit -m "chore: sync notes $(date '+%Y-%m-%d')" 2>&1 1>/dev/null)"
+      if [[ $? -eq 0 ]]; then
+        printf "    ${G}● auto-committed astrolabe notes${X}\n"
+        dirtycounts[$i]=0
+        pushcounts[$i]=$(( pushcounts[$i] + 1 ))
+      else
+        printf "    ${R}✗ auto-commit failed: %s${X}\n" "$commit_err"
+      fi
+    fi
+
     # Pull — --autostash lets git handle dirty state atomically
     if [[ ${pullcounts[$i]} -gt 0 ]]; then
       [[ ${dirtycounts[$i]} -gt 0 ]] && printf "    ${Y}● stashing changes for pull${X}\n"
