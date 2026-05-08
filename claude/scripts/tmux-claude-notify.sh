@@ -9,6 +9,9 @@ case "$MODE" in
     WINDOW_ID=$(tmux display-message -t "$TMUX_PANE" -p '#{window_id}' 2>/dev/null)
     [ -z "$WINDOW_ID" ] && exit 0
     tmux set-window-option -t "$WINDOW_ID" @claude_notify 1
+    # Ring the terminal bell so Ghostty (with bell-action=notify) shows a dock badge
+    PANE_TTY=$(tmux display-message -t "$TMUX_PANE" -p '#{pane_tty}' 2>/dev/null)
+    [ -n "$PANE_TTY" ] && printf '\a' > "$PANE_TTY"
     ;;
 
   clear)

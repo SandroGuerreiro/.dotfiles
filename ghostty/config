@@ -35,6 +35,9 @@ window-padding-x = 0
 window-padding-y = 0
 macos-option-as-alt = left
 
+# Notifications — post macOS notification (dock badge) on terminal bell
+bell-action = notify
+
 # Working directory
 working-directory = ~/Code
 
