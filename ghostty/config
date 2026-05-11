@@ -30,13 +30,10 @@ palette = 14=#8FBCBB
 palette = 15=#ECEFF4
 
 # Window
-background-opacity = 0.85
+background-opacity = 0.97
 window-padding-x = 0
 window-padding-y = 0
 macos-option-as-alt = left
-
-# Notifications — post macOS notification (dock badge) on terminal bell
-bell-action = notify
 
 # Working directory
 working-directory = ~/Code
