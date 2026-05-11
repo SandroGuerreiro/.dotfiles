@@ -2,6 +2,7 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 	pattern = { "*.ts", "*.tsx", "*.js", "*.jsx" },
 	callback = function()
 		local bufnr = vim.api.nvim_get_current_buf()
+		vim.cmd("TSToolsOrganizeImports sync")
 		local clients = vim.lsp.get_clients({ bufnr = bufnr, name = "eslint" })
 		if #clients > 0 then
 			local client = clients[1]
@@ -21,8 +22,6 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 					end
 				end
 			end
-		else
-			vim.cmd("TSToolsOrganizeImports sync")
 		end
 	end,
 })
