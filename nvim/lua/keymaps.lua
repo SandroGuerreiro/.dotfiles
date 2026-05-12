@@ -3,6 +3,9 @@
 -- ------------------------------------------------------------
 local keymap = vim.keymap.set
 
+-- Save with cmd+s (macOS / Ghostty kitty protocol)
+keymap({ 'n', 'i', 'v' }, '<D-s>', '<cmd>w<CR>', { desc = 'Save file' })
+
 -- Disable arrows movement
 keymap('', '<Up>', '<Nop>', {})
 keymap('', '<Down>', '<Nop>', {})

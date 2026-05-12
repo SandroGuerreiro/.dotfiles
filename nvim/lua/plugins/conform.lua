@@ -3,23 +3,30 @@ return {
   event = "BufWritePre",
   opts = {
     formatters_by_ft = {
-      typescript = { "prettier" },
-      typescriptreact = { "prettier" },
-      javascript = { "prettier" },
-      javascriptreact = { "prettier" },
-      json = { "prettier" },
-      css = { "prettier" },
-      html = { "prettier" },
-      markdown = { "prettier" },
+      typescript = { "prettierd", "prettier" },
+      typescriptreact = { "prettierd", "prettier" },
+      javascript = { "prettierd", "prettier" },
+      javascriptreact = { "prettierd", "prettier" },
+      json = { "prettierd", "prettier" },
+      css = { "prettierd", "prettier" },
+      html = { "prettierd", "prettier" },
+      markdown = { "prettierd", "prettier" },
     },
     format_on_save = {
-      timeout_ms = 2000,
+      timeout_ms = 5000,
       lsp_fallback = false,
     },
     formatters = {
+      prettierd = {
+        condition = function(_, ctx)
+          return vim.fs.find(
+            { ".prettierrc", ".prettierrc.js", ".prettierrc.json", ".prettierrc.yaml", "prettier.config.js", "prettier.config.ts" },
+            { path = ctx.filename, upward = true }
+          )[1] ~= nil
+        end,
+      },
       prettier = {
         condition = function(_, ctx)
-          -- only run if prettier is resolvable from the project
           return vim.fs.find(
             { ".prettierrc", ".prettierrc.js", ".prettierrc.json", ".prettierrc.yaml", "prettier.config.js", "prettier.config.ts" },
             { path = ctx.filename, upward = true }

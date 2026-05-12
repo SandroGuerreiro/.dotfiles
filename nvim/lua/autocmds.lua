@@ -3,6 +3,8 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 	callback = function()
 		local bufnr = vim.api.nvim_get_current_buf()
 		vim.cmd("TSToolsOrganizeImports sync")
+
+		-- Run ESLint fixAll (timeout raised to 5s for large monorepos)
 		local clients = vim.lsp.get_clients({ bufnr = bufnr, name = "eslint" })
 		if #clients > 0 then
 			local client = clients[1]
@@ -14,7 +16,7 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 				},
 				context = { only = { "source.fixAll.eslint" }, diagnostics = {} },
 			}
-			local result = client:request_sync("textDocument/codeAction", params, 2000, bufnr)
+			local result = client:request_sync("textDocument/codeAction", params, 5000, bufnr)
 			if result and result.result then
 				for _, action in ipairs(result.result) do
 					if action.edit then
