@@ -66,15 +66,6 @@
         ]
       },
       {
-        "matcher": "WebFetch",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node /Users/sandroguerreiro/.claude/scripts/hooks/post-webfetch-injection-scan.js"
-          }
-        ]
-      },
-      {
         "matcher": "Edit",
         "hooks": [
           {
