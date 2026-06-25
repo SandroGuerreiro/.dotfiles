@@ -169,6 +169,7 @@
     }
   },
   "effortLevel": "medium",
+  "theme": "dark",
   "mcpServers": {
     "nanobanana-mcp": {
       "command": "npx",
