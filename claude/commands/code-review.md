@@ -63,7 +63,6 @@ Focus only on the diff. Do not read extra context beyond the changes.
 Scan the diff for:
 
 *Code Quality (HIGH):*
-- Functions > 50 lines
 - Files > 800 lines
 - Nesting depth > 4 levels
 - Missing error handling
@@ -122,7 +121,7 @@ Then output the results table:
 | Severity | File:Line | Issue | Suggested Fix |
 |----------|-----------|-------|---------------|
 | CRITICAL | src/auth.ts:42 | Hardcoded API key | Move to env variable |
-| HIGH | src/utils.ts:15-89 | Function exceeds 50 lines | Extract helper functions |
+| HIGH | src/utils.ts:800+ | File exceeds 800 lines | Extract into focused modules |
 | MEDIUM | src/api.ts:23 | Mutation of input parameter | Return new object instead |
 
 Every issue MUST be a row in this table. Do not explain issues outside the table. The table IS the report.

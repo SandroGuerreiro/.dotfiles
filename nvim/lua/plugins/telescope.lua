@@ -12,6 +12,21 @@ return {
 		local lga_actions = require('telescope-live-grep-args.actions')
 		telescope.setup({
 			defaults = {
+				vimgrep_arguments = {
+					'rg',
+					'--color=never',
+					'--no-heading',
+					'--with-filename',
+					'--line-number',
+					'--column',
+					'--smart-case',
+					'--glob=!.nx/**',
+					'--glob=!node_modules/**',
+					'--glob=!.git/**',
+					'--glob=!dist/**',
+					'--glob=!build/**',
+					'--glob=!.cache/**',
+				},
 				preview = { treesitter = false },
 				sorting_strategy = 'ascending',
 				path_display = { 'filename_first' },
