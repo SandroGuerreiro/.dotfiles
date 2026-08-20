@@ -67,17 +67,28 @@ return {
 				},
 				mappings = {
 					["<space>"] = "none",
+					-- Same toggle as <leader>fi: hide/show gitignored files
+					-- across the tree, find and grep. See lua/ignore.lua.
+					["H"] = function()
+						require("ignore").toggle()
+					end,
 				},
 			},
 			filesystem = {
 				follow_current_file = { enabled = true, leave_dirs_open = false },
 				use_libuv_file_watcher = true,
 				filtered_items = {
-					visible = true,
+					-- Must stay false: `visible = true` renders every filtered
+					-- item regardless of hide_gitignored, defeating the toggle.
+					visible = false,
 					hide_dotfiles = false,
-					hide_gitignored = false,
-					hide_by_name = { ".git" },
-					never_show = { ".DS_Store" },
+					-- Toggle at runtime with <leader>fi (see lua/ignore.lua)
+					hide_gitignored = true,
+					-- never_show wins over `visible`, so these stay hidden
+					-- in both toggle states.
+					never_show = { ".DS_Store", ".git" },
+					-- Secrets stay hidden regardless of the toggle
+					never_show_by_pattern = { ".env", ".env.*" },
 				},
 			},
 			event_handlers = {

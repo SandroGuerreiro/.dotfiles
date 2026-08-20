@@ -33,18 +33,20 @@ keymap('n', '<M-q>', '<cmd>q<cr>')
 
 -- Telescope keybinds
 local builtin = require('telescope.builtin')
+local ignore = require('ignore')
 keymap('n', '<leader>ff', function()
 	builtin.find_files({
 		hidden = true,
-		no_ignore = true,
-		find_command = { 'fd', '--type', 'f', '--hidden', '--no-ignore', '--exclude', '.git', '--exclude', 'node_modules' },
+		no_ignore = not ignore.is_hiding(),
+		find_command = ignore.fd_args(),
 	})
 end, {})
 keymap('n', '<leader>fg', function()
 	require('telescope').extensions.live_grep_args.live_grep_args({
-		additional_args = { '--hidden', '--no-ignore', '--glob', '!.git', '--glob', '!node_modules' },
+		additional_args = ignore.rg_args(),
 	})
 end, {})
+keymap('n', '<leader>fi', ignore.toggle, { desc = 'Toggle gitignored files (find/grep/tree)' })
 keymap('n', '<leader>fb', builtin.buffers, {})
 keymap('n', '<leader>fs', builtin.current_buffer_fuzzy_find, {})
 keymap('n', '<leader>fh', builtin.help_tags, {})
