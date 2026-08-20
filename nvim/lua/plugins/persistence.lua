@@ -15,10 +15,15 @@ return {
         for _, buf in ipairs(vim.api.nvim_list_bufs()) do
           if vim.api.nvim_buf_is_valid(buf)
             and vim.bo[buf].buftype == ""
-            and vim.api.nvim_buf_get_name(buf) == ""
             and not vim.bo[buf].modified
           then
-            pcall(vim.api.nvim_buf_delete, buf, {})
+            local name = vim.api.nvim_buf_get_name(buf)
+            -- Drop scratch buffers, and buffers pointing at paths that do not
+            -- exist on disk (e.g. a typo'd :e). Persisting the latter makes
+            -- neo-tree's follow_current_file throw ENOENT on the next restore.
+            if name == "" or vim.fn.filereadable(name) == 0 then
+              pcall(vim.api.nvim_buf_delete, buf, {})
+            end
           end
         end
       end,
