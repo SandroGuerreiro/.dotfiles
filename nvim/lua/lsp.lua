@@ -262,14 +262,52 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
+-- Jump to the real source rather than the generated .d.ts declaration.
+-- vtsls exposes this as a server command; anything else falls back to the
+-- standard definition request.
+local function goto_source_definition()
+  local bufnr = vim.api.nvim_get_current_buf()
+  local client = vim.lsp.get_clients({ bufnr = bufnr, name = 'vtsls' })[1]
+  if not client then
+    return vim.lsp.buf.definition()
+  end
+
+  local params = vim.lsp.util.make_position_params(0, client.offset_encoding)
+  client:exec_cmd({
+    command = 'typescript.goToSourceDefinition',
+    arguments = { params.textDocument.uri, params.position },
+  }, { bufnr = bufnr }, function(err, result)
+    if err then
+      vim.notify('Source definition failed: ' .. err.message, vim.log.levels.WARN)
+      return vim.lsp.buf.definition()
+    end
+    if not result or vim.tbl_isempty(result) then
+      return vim.lsp.buf.definition()
+    end
+    vim.lsp.util.show_document(result[1], client.offset_encoding, { focus = true })
+  end)
+end
+
 -- LSP server configs (vim.lsp.config API for Neovim 0.11+)
 vim.lsp.config('lua_ls', { capabilities = capabilities })
 vim.lsp.config('gopls', { capabilities = capabilities })
 vim.lsp.config('rust_analyzer', { capabilities = capabilities })
 vim.lsp.config('eslint', { capabilities = capabilities })
 
+-- vtsls bundles its own TypeScript, so it does not depend on whatever
+-- `npm i -g typescript` currently resolves to.
+vim.lsp.config('vtsls', {
+  capabilities = capabilities,
+  on_attach = function(_, bufnr)
+    vim.keymap.set('n', 'gd', goto_source_definition, { buffer = bufnr })
+  end,
+})
+
 local servers = { 'lua_ls', 'gopls', 'rust_analyzer' }
 if vim.fn.executable('vscode-eslint-language-server') == 1 then
   table.insert(servers, 'eslint')
+end
+if vim.fn.executable('vtsls') == 1 then
+  table.insert(servers, 'vtsls')
 end
 vim.lsp.enable(servers)
