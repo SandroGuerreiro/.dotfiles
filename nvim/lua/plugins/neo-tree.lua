@@ -87,8 +87,9 @@ return {
 					-- never_show wins over `visible`, so these stay hidden
 					-- in both toggle states.
 					never_show = { ".DS_Store", ".git" },
-					-- Secrets stay hidden regardless of the toggle
-					never_show_by_pattern = { ".env", ".env.*" },
+					-- Env files stay visible regardless of the toggle,
+					-- even though they are usually gitignored.
+					always_show_by_pattern = { ".env", ".env.*" },
 				},
 			},
 			event_handlers = {

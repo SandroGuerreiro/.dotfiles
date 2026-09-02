@@ -2,31 +2,30 @@
 --   GITIGNORE VISIBILITY
 --   Single source of truth for whether gitignored files show up
 --   in Telescope (find/grep) and Neo-tree.
---   Secrets (.env / .env.*) are ALWAYS excluded, in both modes.
+--   Env files (.env / .env.*) are ALWAYS shown, in both modes.
 -- ------------------------------------------------------------
 local M = {}
 
 -- true  = respect .gitignore (gitignored files hidden)
--- false = show everything except the secret patterns below
+-- false = show everything
 local hide_gitignored = true
-
--- Never surfaced by find, grep or the file tree, whatever the toggle says.
-M.secret_patterns = { '.env', '.env.*' }
 
 function M.is_hiding()
 	return hide_gitignored
 end
 
--- Command for `fd`, used by Telescope find_files.
+-- Command for Telescope find_files.
+--
+-- fd has no "include this even if gitignored" flag, so when we are respecting
+-- .gitignore we run a second, unrestricted pass limited to the env files and
+-- concatenate: awk drops the duplicates the two passes would otherwise produce.
 function M.fd_args()
-	local args = { 'fd', '--type', 'f', '--hidden', '--exclude', '.git', '--exclude', 'node_modules' }
+	local base = "fd --type f --hidden --exclude .git --exclude node_modules"
 	if not hide_gitignored then
-		table.insert(args, '--no-ignore')
+		return { 'sh', '-c', base .. " --no-ignore" }
 	end
-	for _, pattern in ipairs(M.secret_patterns) do
-		vim.list_extend(args, { '--exclude', pattern })
-	end
-	return args
+	local cmd = base .. "; " .. base .. " --no-ignore --glob '.env*'"
+	return { 'sh', '-c', '{ ' .. cmd .. "; } | awk '!seen[$0]++'" }
 end
 
 -- Extra arguments for `rg`, used by Telescope live_grep_args.
@@ -35,15 +34,12 @@ function M.rg_args()
 	if not hide_gitignored then
 		table.insert(args, '--no-ignore')
 	end
-	for _, pattern in ipairs(M.secret_patterns) do
-		vim.list_extend(args, { '--glob', '!' .. pattern })
-	end
 	return args
 end
 
 -- Neo-tree drives this through filtered_items.visible: true reveals every
 -- filtered item (including gitignored ones), false re-applies the filters.
--- Secrets use never_show*, which `visible` cannot override.
+-- Env files use always_show_by_pattern, so they survive both states.
 -- Delegate to neo-tree's own toggle_hidden rather than setting the field
 -- directly: it redraws via fs._navigate_internal, which a plain refresh()
 -- does not do, so a direct mutation never reaches the screen.
